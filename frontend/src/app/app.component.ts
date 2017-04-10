@@ -1,10 +1,24 @@
 import { Component } from '@angular/core';
 
+export class ToDoItem {
+  id: number;
+  title: string;
+  status: boolean;
+}
+
+const TODO_ITEMS: ToDoItem[] = [
+  { id: 1, title: 'Awake', status: true},
+  { id: 2, title: 'Brush teeth', status: true},
+  { id: 3, title: 'Procrastinate', status: false},
+];
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'ToDo list!';
+
+  todo_items = TODO_ITEMS;
 }

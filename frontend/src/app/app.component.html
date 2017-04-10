@@ -1,3 +1,10 @@
 <h1>
   {{title}}
 </h1>
+
+<ul>
+  <li *ngFor="let todo_item of todo_items">
+    <input type="checkbox" [(ngModel)]="todo_item.status">
+    {{ todo_item.title }}
+  </li>
+</ul>
