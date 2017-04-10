@@ -5,6 +5,13 @@
 <ul>
   <li *ngFor="let todo_item of todo_items">
     <input type="checkbox" [(ngModel)]="todo_item.status">
-    {{ todo_item.title }}
+    <span *ngIf="todo_item === selected_todo_item">
+      <input type="text" [(ngModel)]="todo_item.title">
+      <button (click)="saveTodoItem(item)">save</button>
+    </span>
+    <span *ngIf="todo_item !== selected_todo_item">
+      {{ todo_item.title }}
+      <button (click)="editTodoItem(todo_item)">edit</button>
+    </span>
   </li>
 </ul>

@@ -19,6 +19,14 @@ const TODO_ITEMS: ToDoItem[] = [
 })
 export class AppComponent {
   title = 'ToDo list!';
+  selected_todo_item: ToDoItem;
 
   todo_items = TODO_ITEMS;
+
+  editTodoItem(item: ToDoItem): void {
+    this.selected_todo_item = item;
+  }
+  saveTodoItem(item: ToDoItem): void {
+    this.selected_todo_item = null;
+  }
 }
