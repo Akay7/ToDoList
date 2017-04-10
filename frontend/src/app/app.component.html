@@ -15,3 +15,8 @@
     </span>
   </li>
 </ul>
+
+<div>
+  <input type="text" [(ngModel)]="new_item_title">
+  <button [disabled]="!new_item_title" (click)="createTodoItem(new_item_title)">create</button>
+</div>

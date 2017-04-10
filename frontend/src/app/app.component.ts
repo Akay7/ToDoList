@@ -29,4 +29,8 @@ export class AppComponent {
   saveTodoItem(item: ToDoItem): void {
     this.selected_todo_item = null;
   }
+
+  createTodoItem(title: string): void {
+    this.todo_items.push({ id: 3, title: title, status: false} as ToDoItem);
+  }
 }
