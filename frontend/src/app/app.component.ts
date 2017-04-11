@@ -1,36 +1,38 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-export class ToDoItem {
-  id: number;
-  title: string;
-  status: boolean;
-}
-
-const TODO_ITEMS: ToDoItem[] = [
-  { id: 1, title: 'Awake', status: true},
-  { id: 2, title: 'Brush teeth', status: true},
-  { id: 3, title: 'Procrastinate', status: false},
-];
+import {TodoItem} from './todo-item';
+import {TodoService} from './todo.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [TodoService]
 })
-export class AppComponent {
+
+export class AppComponent implements OnInit {
   title = 'ToDo list!';
-  selected_todo_item: ToDoItem;
+  todo_items: TodoItem[];
+  selected_todo_item: TodoItem;
 
-  todo_items = TODO_ITEMS;
+  constructor (private todoService: TodoService ) { }
 
-  editTodoItem(item: ToDoItem): void {
+  ngOnInit(): void {
+    this.getTodoItems();
+  }
+
+  getTodoItems(): void {
+    this.todoService.getTodoItems().then(todo_items => this.todo_items = todo_items);
+  }
+
+  editTodoItem(item: TodoItem): void {
     this.selected_todo_item = item;
   }
-  saveTodoItem(item: ToDoItem): void {
+  saveTodoItem(item: TodoItem): void {
     this.selected_todo_item = null;
   }
 
   createTodoItem(title: string): void {
-    this.todo_items.push({ id: 3, title: title, status: false} as ToDoItem);
+    this.todo_items.push({ id: 3, title: title, status: false} as TodoItem);
   }
 }
