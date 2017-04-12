@@ -6,6 +6,7 @@
   "apps": [
     {
       "root": "src",
+      "deployUrl": "static",
       "outDir": "dist",
       "assets": [
         "assets",
