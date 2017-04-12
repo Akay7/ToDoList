@@ -3,13 +3,14 @@
 </h1>
 
 <ul>
-  <li *ngFor="let todo_item of todo_items">
+  <li *ngFor="let todo_item of todoItems">
     <input type="checkbox" [(ngModel)]="todo_item.status">
-    <span *ngIf="todo_item === selected_todo_item">
+    <span *ngIf="todo_item === selectedTodoItem">
       <input type="text" [(ngModel)]="todo_item.title">
       <button (click)="saveTodoItem(item)">save</button>
+      <button (click)="delete(todo_item)">x</button>
     </span>
-    <span *ngIf="todo_item !== selected_todo_item">
+    <span *ngIf="todo_item !== selectedTodoItem">
       {{ todo_item.title }}
       <button (click)="editTodoItem(todo_item)">edit</button>
     </span>
@@ -17,6 +18,6 @@
 </ul>
 
 <div>
-  <input type="text" [(ngModel)]="new_item_title">
-  <button [disabled]="!new_item_title" (click)="createTodoItem(new_item_title)">create</button>
+  <input type="text" [(ngModel)]="newItemTitle">
+  <button [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
 </div>
