@@ -1,5 +1,5 @@
 <ul>
-  <li *ngFor="let todoItem of todoItems">
+  <li *ngFor="let todoItem of todoItems | orderById">
     <input type="checkbox" [(ngModel)]="todoItem.status" (change)="save(todoItem)">
 
     <span *ngIf="todoItem === selectedTodoItem">
@@ -9,7 +9,7 @@
     </span>
 
     <span *ngIf="todoItem !== selectedTodoItem">
-      {{ todoItem.id }}{{ todoItem.title }}
+      {{ todoItem.title }}
       <button (click)="editTodoItem(todoItem)">edit</button>
     </span>
   </li>
