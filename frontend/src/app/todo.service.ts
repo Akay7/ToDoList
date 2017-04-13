@@ -25,6 +25,15 @@ export class TodoService {
       .catch(this.handleError);
   }
 
+  updateTodoItem(todoItem: TodoItem): Promise<TodoItem> {
+    const url = `${this.todoItemsUrl}${todoItem.id}/`;
+    return this.http
+      .put(url, todoItem)
+      .toPromise()
+      .then(res => res.json() as TodoItem)
+      .catch(this.handleError);
+  }
+
   deleteTodoItem(id: number): Promise<void> {
     const url = `${this.todoItemsUrl}${id}/`;
     return this.http.delete(url)

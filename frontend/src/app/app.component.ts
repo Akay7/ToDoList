@@ -27,8 +27,12 @@ export class AppComponent implements OnInit {
   editTodoItem(item: TodoItem): void {
     this.selectedTodoItem = item;
   }
-  saveTodoItem(item: TodoItem): void {
-    this.selectedTodoItem = null;
+
+  save(todoItem: TodoItem): void {
+    this.todoService.updateTodoItem(todoItem)
+      .then(() => {
+        this.selectedTodoItem = null;
+      });
   }
 
   add(title: string): void {
