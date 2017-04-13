@@ -3,20 +3,23 @@
 </h1>
 
 <ul>
-  <li *ngFor="let todo_item of todo_items">
-    <input type="checkbox" [(ngModel)]="todo_item.status">
-    <span *ngIf="todo_item === selected_todo_item">
-      <input type="text" [(ngModel)]="todo_item.title">
-      <button (click)="saveTodoItem(item)">save</button>
+  <li *ngFor="let todoItem of todoItems">
+    <input type="checkbox" [(ngModel)]="todoItem.status" (change)="save(todoItem)">
+
+    <span *ngIf="todoItem === selectedTodoItem">
+      <input type="text" [(ngModel)]="todoItem.title">
+      <button (click)="save(todoItem)">save</button>
+      <button (click)="delete(todoItem)">x</button>
     </span>
-    <span *ngIf="todo_item !== selected_todo_item">
-      {{ todo_item.title }}
-      <button (click)="editTodoItem(todo_item)">edit</button>
+
+    <span *ngIf="todoItem !== selectedTodoItem">
+      {{ todoItem.title }}
+      <button (click)="editTodoItem(todoItem)">edit</button>
     </span>
   </li>
 </ul>
 
 <div>
-  <input type="text" [(ngModel)]="new_item_title">
-  <button [disabled]="!new_item_title" (click)="createTodoItem(new_item_title)">create</button>
+  <input type="text" [(ngModel)]="newItemTitle">
+  <button [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
 </div>

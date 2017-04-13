@@ -7,13 +7,12 @@ import {TodoService} from './todo.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [TodoService]
 })
 
 export class AppComponent implements OnInit {
   title = 'ToDo list!';
-  todo_items: TodoItem[];
-  selected_todo_item: TodoItem;
+  todoItems: TodoItem[];
+  selectedTodoItem: TodoItem;
 
   constructor (private todoService: TodoService ) { }
 
@@ -22,17 +21,36 @@ export class AppComponent implements OnInit {
   }
 
   getTodoItems(): void {
-    this.todoService.getTodoItems().then(todo_items => this.todo_items = todo_items);
+    this.todoService.getTodoItems().then(todo_items => this.todoItems = todo_items);
   }
 
   editTodoItem(item: TodoItem): void {
-    this.selected_todo_item = item;
-  }
-  saveTodoItem(item: TodoItem): void {
-    this.selected_todo_item = null;
+    this.selectedTodoItem = item;
   }
 
-  createTodoItem(title: string): void {
-    this.todo_items.push({ id: 3, title: title, status: false} as TodoItem);
+  save(todoItem: TodoItem): void {
+    this.todoService.updateTodoItem(todoItem)
+      .then(() => {
+        this.selectedTodoItem = null;
+      });
+  }
+
+  add(title: string): void {
+    title = title.trim();
+    if (!title) { return; }
+    this.todoService.createTodoItem(title)
+      .then(todo => {
+        this.todoItems.push(todo);
+        this.selectedTodoItem = null;
+      });
+  }
+
+  delete(todoItem: TodoItem): void {
+    this.todoService
+      .deleteTodoItem(todoItem.id)
+      .then(() => {
+        this.todoItems = this.todoItems.filter(todo => todo !== todoItem);
+        if (this.selectedTodoItem === todoItem) { this.selectedTodoItem = null;}
+      });
   }
 }
