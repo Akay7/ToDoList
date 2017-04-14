@@ -1,13 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
 
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { TodoItemsComponent } from './todo-items/todo-items.component';
 import { OrderByIdPipe } from './order-by-id.pipe';
 import { TodoService } from './todo.service';
-import {TodoItem} from "./todo-item";
+import {TodoItem} from './todo-item';
 
 class MockTodoService {
   TODO_ITEMS: TodoItem[] = [
@@ -30,8 +29,7 @@ describe('AppComponent', () => {
         OrderByIdPipe
       ],
       imports: [
-        FormsModule,
-        HttpModule
+        FormsModule
       ],
       providers: [
         { provide: TodoService, useClass: MockTodoService}
