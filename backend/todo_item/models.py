@@ -12,9 +12,13 @@ class TodoItem(models.Model):
 
 class TodoItemBinding(WebsocketBinding):
     model = TodoItem
-    stream = "intval"
+    stream = "todo_item"
     fields = ("title", "status",)
 
     @classmethod
     def group_names(cls, instance):
         return ("todo_list",)
+
+    @classmethod
+    def has_permission(self, user, action, pk):
+        return True

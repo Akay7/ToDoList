@@ -19,3 +19,16 @@ class WebSocketTests(ChannelTestCase):
         received = client.receive()
 
         self.assertNotEquals(received, None)
+
+    def test_cant_add_new_todo_item_by_ws(self):
+        client = HttpClient()
+        client.join_group("todo_list")
+
+        payload = {
+            'stream': 'todo_item',
+            'payload': {'data': {'title': 'test_item'}, 'action': 'create',}
+        }
+
+        client.send_and_consume('websocket.receive', path='/api/ws/', text=payload)
+
+        self.assertEqual(TodoItem.objects.count(), 1)
