@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { TodoService } from './todo.service';
 import { TodoItemsComponent } from './todo-items/todo-items.component';
 import { OrderByIdPipe } from './order-by-id.pipe';
+import { ChatService } from './chat.service';
+import { WebSocketService } from './web-socket.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,11 @@ import { OrderByIdPipe } from './order-by-id.pipe';
     FormsModule,
     HttpModule
   ],
-  providers: [TodoService],
+  providers: [
+    TodoService,
+    ChatService,
+    WebSocketService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

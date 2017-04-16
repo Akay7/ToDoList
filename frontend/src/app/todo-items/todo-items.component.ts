@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import {TodoItem} from '../todo-item';
-import {TodoService} from '../todo.service';
+import { TodoItem } from '../todo-item';
+import { TodoService } from '../todo.service';
+import { ChannelService } from '../channel.service';
 
 @Component({
   selector: 'app-todo-items',
@@ -12,10 +13,14 @@ export class TodoItemsComponent implements OnInit {
   todoItems: TodoItem[];
   selectedTodoItem: TodoItem;
 
-  constructor (private todoService: TodoService ) { }
+  constructor (private todoService: TodoService,
+              private channelService: ChannelService) { }
 
   ngOnInit(): void {
     this.getTodoItems();
+    this.channelService.messages.subscribe(msg => {
+      console.log(msg);
+    });
   }
 
   getTodoItems(): void {

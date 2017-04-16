@@ -48,3 +48,7 @@ all commands run inside frontend folder
 for correct works requests to api, 
 you must start backend dev server, step 5 in Backend section). 
 
+### Credits
+
+1. Łukasz Wojciechowski [article about angular2 and web-sockets](https://medium.com/@lwojciechowski/websockets-with-angular2-and-rxjs-8b6c5be02fac).
+2. I'm take implementation of web-sockets for angular2 by Peter Kassenaar from his github [repo](https://github.com/PeterKassenaar/ng2-websockets) 
