@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { TodoService } from './todo.service';
 import { TodoItemsComponent } from './todo-items/todo-items.component';
 import { OrderByIdPipe } from './order-by-id.pipe';
-import { ChatService } from './chat.service';
+import { ChannelService } from './channel.service';
 import { WebSocketService } from './web-socket.service';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { WebSocketService } from './web-socket.service';
   ],
   providers: [
     TodoService,
-    ChatService,
+    ChannelService,
     WebSocketService
   ],
   bootstrap: [AppComponent]
