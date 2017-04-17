@@ -7,8 +7,8 @@ describe('frontend App', () => {
     page = new FrontendPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display message saying ToDo list!', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('ToDo list!');
   });
 });

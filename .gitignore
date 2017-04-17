@@ -2,3 +2,4 @@
 media/
 db.sqlite3
 .idea
+geckodriver.log

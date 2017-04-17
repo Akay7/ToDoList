@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import {TodoItem} from '../todo-item';
-import {TodoService} from '../todo.service';
+import { TodoItem } from '../todo-item';
+import { TodoService } from '../todo.service';
 
 @Component({
   selector: 'app-todo-items',
@@ -12,14 +12,11 @@ export class TodoItemsComponent implements OnInit {
   todoItems: TodoItem[];
   selectedTodoItem: TodoItem;
 
-  constructor (private todoService: TodoService ) { }
+  constructor (private todoService: TodoService) { }
 
   ngOnInit(): void {
-    this.getTodoItems();
-  }
-
-  getTodoItems(): void {
-    this.todoService.getTodoItems().then(todo_items => this.todoItems = todo_items);
+    this.todoService.todoItems.subscribe(todoItems => this.todoItems = todoItems);
+    this.todoService.loadAll();
   }
 
   editTodoItem(item: TodoItem): void {
@@ -27,28 +24,16 @@ export class TodoItemsComponent implements OnInit {
   }
 
   save(todoItem: TodoItem): void {
-    this.todoService.updateTodoItem(todoItem)
-      .then(() => {
-        this.selectedTodoItem = null;
-      });
+    this.todoService.updateTodoItem(todoItem);
   }
 
   add(title: string): void {
     title = title.trim();
     if (!title) { return; }
-    this.todoService.createTodoItem(title)
-      .then(todo => {
-        this.todoItems.push(todo);
-        this.selectedTodoItem = null;
-      });
+    this.todoService.createTodoItem(title);
   }
 
   delete(todoItem: TodoItem): void {
-    this.todoService
-      .deleteTodoItem(todoItem.id)
-      .then(() => {
-        this.todoItems = this.todoItems.filter(todo => todo !== todoItem);
-        if (this.selectedTodoItem === todoItem) { this.selectedTodoItem = null;}
-      });
+    this.todoService.deleteTodoItem(todoItem.id);
   }
 }

@@ -16,6 +16,6 @@
 </ul>
 
 <div>
-  <input type="text" [(ngModel)]="newItemTitle">
-  <button [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
+  <input id="new-item-title" type="text" [(ngModel)]="newItemTitle">
+  <button id="new-item-create" [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
 </div>
