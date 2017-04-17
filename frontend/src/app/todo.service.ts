@@ -21,8 +21,23 @@ export class TodoService {
 
     this._todoItems = new Subject<TodoItem[]>();
 
-    this.channelService.messages.subscribe(msg => {
-      console.log(msg);
+    this.channelService.messages.map(msg => msg.payload).subscribe(payload => {
+      const data = payload['data'];
+      data['id'] = payload['pk'];
+
+      if (payload['action'] === 'create') {
+        // add new todo_item only if it not exist
+        if (!this.dataStore.todoItems.filter(todo => todo.id === data['id']).length) {
+          this.dataStore.todoItems.push(data);
+        }
+      } else if (payload['action'] === 'update') {
+        this.dataStore.todoItems.forEach((t, i) => {
+          if (t.id === data['id']) { this.dataStore.todoItems[i] = data; }
+        });
+      } else if (payload['action'] === 'delete') {
+        this.dataStore.todoItems = this.dataStore.todoItems.filter(todo => todo.id !== data['id']);
+      }
+      this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
     });
   }
 
@@ -42,7 +57,10 @@ export class TodoService {
     return this.http
       .post(this.todoItemsUrl, {title: title})
       .map(response => response.json()).subscribe(data => {
-        this.dataStore.todoItems.push(data);
+        // sometimes socket can create new todo_item before response come
+        if (!this.dataStore.todoItems.filter(todo => todo.id === data['id']).length) {
+          this.dataStore.todoItems.push(data);
+        }
         this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
       }, error => console.log('Could not create todo'));
   }
@@ -67,10 +85,5 @@ export class TodoService {
         this.dataStore.todoItems = this.dataStore.todoItems.filter(todo => todo.id !== id);
         this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
       }, error => console.log('Could not delete todo'));
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error accured', error);
-    return Promise.reject(error.message || error);
   }
 }
