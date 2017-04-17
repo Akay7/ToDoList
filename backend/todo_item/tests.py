@@ -1,6 +1,5 @@
 from django.test import TestCase
 from channels.test import ChannelTestCase, HttpClient
-from channels.signals import consumer_finished
 
 from .models import TodoItem
 
@@ -11,10 +10,6 @@ class WebSocketTests(ChannelTestCase):
         client.join_group("todo_list")
 
         TodoItem.objects.create(title="test_item")
-
-        # ToDo: To know why next statement is necessary
-        # https://github.com/django/channels/issues/607
-        # consumer_finished.send(sender=None)
 
         received = client.receive()
 
@@ -31,4 +26,4 @@ class WebSocketTests(ChannelTestCase):
 
         client.send_and_consume('websocket.receive', path='/api/ws/', text=payload)
 
-        self.assertEqual(TodoItem.objects.count(), 1)
+        self.assertEqual(TodoItem.objects.count(), 0)

@@ -35,6 +35,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         )
 
     def test_can_see_todo_item_created_in_different_window_of_browser(self):
+        # ToDo: ask about StaticLiveServerTestCase for channel
         todo_title = "Brush teeth"
 
         # connect to server from two browser instances

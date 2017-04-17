@@ -21,4 +21,5 @@ class TodoItemBinding(WebsocketBinding):
 
     @classmethod
     def has_permission(self, user, action, pk):
-        return True
+        # CRUD just trough REST API
+        return False
