@@ -1,4 +1,4 @@
-export class TodoItem {
+export interface TodoItem {
   id: number;
   title: string;
   status: boolean;

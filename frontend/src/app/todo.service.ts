@@ -2,44 +2,71 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
+import { ChannelService } from './channel.service';
 import { TodoItem } from './todo-item';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class TodoService {
   private todoItemsUrl = 'api/web/todo_item/';
 
-  constructor(private http: Http) { }
+  private _todoItems: Subject<TodoItem[]>;
+  private dataStore: {
+    todoItems: TodoItem[];
+  };
 
-  getTodoItems(): Promise<TodoItem[]> {
-    return this.http.get(this.todoItemsUrl)
-      .toPromise()
-      .then(response => response.json() as TodoItem[])
-      .catch(this.handleError);
+  constructor(private http: Http,
+              private channelService: ChannelService) {
+    this.dataStore = { todoItems: []};
+
+    this._todoItems = new Subject<TodoItem[]>();
+
+    this.channelService.messages.subscribe(msg => {
+      console.log(msg);
+    });
   }
 
-  createTodoItem(title: string): Promise<TodoItem> {
+  get todoItems() {
+    return this._todoItems.asObservable();
+  }
+
+  loadAll() {
+    this.http.get(this.todoItemsUrl).map(res => res.json()).subscribe(
+      data => {
+        this.dataStore.todoItems = data;
+        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+      }, error => console.log('Could not load todoItems'));
+  }
+
+  createTodoItem(title: string) {
     return this.http
       .post(this.todoItemsUrl, {title: title})
-      .toPromise()
-      .then(res => res.json() as TodoItem)
-      .catch(this.handleError);
+      .map(response => response.json()).subscribe(data => {
+        this.dataStore.todoItems.push(data);
+        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+      }, error => console.log('Could not create todo'));
   }
 
-  updateTodoItem(todoItem: TodoItem): Promise<TodoItem> {
+  updateTodoItem(todoItem: TodoItem) {
     const url = `${this.todoItemsUrl}${todoItem.id}/`;
-    return this.http
-      .put(url, todoItem)
-      .toPromise()
-      .then(res => res.json() as TodoItem)
-      .catch(this.handleError);
+    this.http.put(url, todoItem)
+      .map(response => response.json())
+      .subscribe(data => {
+        this.dataStore.todoItems.forEach((t, i) => {
+          if (t.id === data.id) { this.dataStore.todoItems[i] = data; }
+        });
+
+        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+      }, error => console.log('Could not update todo.'));
   }
 
-  deleteTodoItem(id: number): Promise<void> {
+  deleteTodoItem(id: number) {
     const url = `${this.todoItemsUrl}${id}/`;
-    return this.http.delete(url)
-      .toPromise()
-      .then(() => null)
-      .catch(this.handleError);
+    this.http.delete(url)
+      .subscribe(response => {
+        this.dataStore.todoItems = this.dataStore.todoItems.filter(todo => todo.id !== id);
+        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+      }, error => console.log('Could not delete todo'));
   }
 
   private handleError(error: any): Promise<any> {
