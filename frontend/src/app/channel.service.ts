@@ -3,8 +3,10 @@ import { Subject } from 'rxjs/Subject';
 import { WebSocketService } from './web-socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+import { environment } from '../environments/environment';
 
-const CHANNEL_URL = 'ws://localhost:8000/api/ws/';
+// CHANNEL_URL is link to django channel routing path
+const CHANNEL_URL = environment.ws_url + '/api/ws/';
 
 export interface Message {
   stream: string;
