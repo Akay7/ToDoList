@@ -2,7 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 
 
-class FunctionalTest(StaticLiveServerTestCase):
+class FunctionalTestWithoutChannels(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 

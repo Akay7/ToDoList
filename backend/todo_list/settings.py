@@ -98,8 +98,14 @@ DATABASES = {
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "BACKEND": "asgi_redis.RedisChannelLayer",
         "ROUTING": "todo_list.routing.channel_routing",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+        "TEST_CONFIG": {
+            "hosts": [("localhost", 6400)],
+        },
     },
 }
 
