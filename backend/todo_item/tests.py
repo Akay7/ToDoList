@@ -42,9 +42,17 @@ class TodoListTests(TestCase):
         # todo_list must exists in db
         self.assertEqual(TodoList.objects.count(), qty_todo_items_before + 1)
 
-        self.fail("make direct link to todo_lists")
+        todo_list_uid = response.json()['id']
+        # unique id of list must be very long
+        self.assertTrue(len(todo_list_uid) > 10)
+
+        response = self.client.get('/api/web/todo_list/{}/'.format(todo_list_uid))
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.json()['title'], 'Homework')
 
     # FixMe:cant see all todo items in system
+
 
 class WebSocketTests(ChannelTestCase):
     def test_creating_new_todo_items_send_notification(self):
