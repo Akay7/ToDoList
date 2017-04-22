@@ -2,7 +2,15 @@ from django.db import models
 from channels.binding.websockets import WebsocketBinding
 
 
+class TodoList(models.Model):
+    title = models.CharField(max_length=140)
+
+    def __str__(self):
+        return self.title
+
+
 class TodoItem(models.Model):
+    todo_list = models.ForeignKey(TodoList, related_name="todo_items", null=True)
     title = models.CharField(max_length=140, unique=True)
     status = models.BooleanField(default=False)
 
