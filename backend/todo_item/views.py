@@ -1,12 +1,24 @@
 from rest_framework import viewsets
+import django_filters
 
 from .models import TodoItem, TodoList
 from .serializers import TodoItemSerializer, TodoListSerializer
 
 
+class TodoItemFilter(django_filters.FilterSet):
+    todo_list = django_filters.rest_framework.ModelChoiceFilter(
+        queryset=TodoList.objects.all(), required=True
+    )
+
+    class Meta:
+        model = TodoItem
+        fields = ('todo_list',)
+
+
 class TodoItemViewSet(viewsets.ModelViewSet):
     queryset = TodoItem.objects.all()
     serializer_class = TodoItemSerializer
+    filter_class = TodoItemFilter
 
 
 class TodoListViewSet(viewsets.ModelViewSet):

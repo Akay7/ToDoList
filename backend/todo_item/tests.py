@@ -51,7 +51,25 @@ class TodoListTests(TestCase):
 
         self.assertEqual(response.json()['title'], 'Homework')
 
-    # FixMe:cant see all todo items in system
+    def test_can_see_all_todo_items_directed_to_special_list(self):
+        todo_list1 = TodoList.objects.create(title="Homework")
+        todo_list2 = TodoList.objects.create(title="Products")
+        todo_item1 = TodoItem.objects.create(todo_list=todo_list1, title="Buy products")
+        todo_item2 = TodoItem.objects.create(todo_list=todo_list2, title="Bread")
+        todo_item3 = TodoItem.objects.create(todo_list=todo_list2, title="Rice")
+
+        # can't get all todo_items by one request
+        response = self.client.get('/api/web/todo_item/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 0)
+
+        # can get filtered todo_items by todo_list
+        response = self.client.get('/api/web/todo_item/', {'todo_list': todo_list2.id})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+        self.assertNotContains(response, todo_item1)
+        self.assertContains(response, todo_item2)
+        self.assertContains(response, todo_item3)
 
 
 class WebSocketTests(ChannelTestCase):
