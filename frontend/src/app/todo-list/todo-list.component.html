@@ -1,3 +1,7 @@
+<div *ngIf="todoList">
+  <h2>{{ todoList.title }}</h2>
+</div>
+
 <ul>
   <li *ngFor="let todoItem of todoItems | orderById">
     <input type="checkbox" [(ngModel)]="todoItem.status" (change)="save(todoItem)">

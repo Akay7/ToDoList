@@ -3,9 +3,9 @@ import { TestBed, async } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { TodoItemsComponent } from './todo-items/todo-items.component';
+import { TodoListComponent } from './todo-list/todo-items.component';
 import { OrderByIdPipe } from './order-by-id.pipe';
-import { TodoService } from './todo.service';
+import { TodoItemService } from './todo.service';
 import {TodoItem} from './todo-item';
 
 class MockTodoService {
@@ -25,14 +25,14 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        TodoItemsComponent,
+        TodoListComponent,
         OrderByIdPipe
       ],
       imports: [
         FormsModule
       ],
       providers: [
-        { provide: TodoService, useClass: MockTodoService}
+        { provide: TodoItemService, useClass: MockTodoService}
       ],
     }).compileComponents();
   }));

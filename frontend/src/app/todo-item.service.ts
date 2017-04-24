@@ -7,7 +7,7 @@ import { TodoItem } from './todo-item';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class TodoService {
+export class TodoItemService {
   private todoItemsUrl = 'api/web/todo_item/';
 
   private _todoItems: Subject<TodoItem[]>;

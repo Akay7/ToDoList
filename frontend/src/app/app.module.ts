@@ -4,25 +4,31 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { TodoService } from './todo.service';
-import { TodoItemsComponent } from './todo-items/todo-items.component';
-import { OrderByIdPipe } from './order-by-id.pipe';
+import { AppRoutingModule } from './app-routing.module';
+import { MainPageComponent } from './main-page/main-page.component';
+import { TodoListComponent } from './todo-list/todo-list.component';
 import { ChannelService } from './channel.service';
 import { WebSocketService } from './web-socket.service';
+import { TodoListService } from './todo-list.service';
+import { TodoItemService } from './todo-item.service';
+import { OrderByIdPipe } from './order-by-id.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TodoItemsComponent,
+    MainPageComponent,
+    TodoListComponent,
     OrderByIdPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AppRoutingModule
   ],
   providers: [
-    TodoService,
+    TodoListService,
+    TodoItemService,
     ChannelService,
     WebSocketService
   ],
