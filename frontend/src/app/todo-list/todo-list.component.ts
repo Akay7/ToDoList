@@ -26,10 +26,10 @@ export class TodoListComponent implements OnInit {
   ngOnInit(): void {
     this.route.params
       .switchMap((params: Params) => this.todoListService.get(params['id']))
-      .subscribe(todoList => this.todoList = todoList);
-
-    this.todoItemService.todoItems.subscribe(todoItems => this.todoItems = todoItems);
-    this.todoItemService.loadAll();
+      .subscribe(todoList => {
+        this.todoList = todoList;
+        this.todoItemService.getTodoItems(this.todoList.id).subscribe(todoItems => this.todoItems = todoItems);
+      });
   }
 
   editTodoItem(item: TodoItem): void {
@@ -38,15 +38,16 @@ export class TodoListComponent implements OnInit {
 
   save(todoItem: TodoItem): void {
     this.todoItemService.updateTodoItem(todoItem);
+    this.selectedTodoItem = null;
   }
 
   add(title: string): void {
     title = title.trim();
     if (!title) { return; }
-    this.todoItemService.createTodoItem(title);
+    this.todoItemService.createTodoItem(title, this.todoList.id);
   }
 
   delete(todoItem: TodoItem): void {
-    this.todoItemService.deleteTodoItem(todoItem.id);
+    this.todoItemService.deleteTodoItem(todoItem);
   }
 }

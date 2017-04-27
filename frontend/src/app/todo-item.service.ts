@@ -10,80 +10,76 @@ import { Subject } from 'rxjs/Subject';
 export class TodoItemService {
   private todoItemsUrl = 'api/web/todo_item/';
 
-  private _todoItems: Subject<TodoItem[]>;
-  private dataStore: {
-    todoItems: TodoItem[];
-  };
+  private _todoItems: {[id: string]: Subject<TodoItem[]>};
+  private dataStore: { [id: string]: TodoItem[] };
 
   constructor(private http: Http,
               private channelService: ChannelService) {
-    this.dataStore = { todoItems: []};
+    this.dataStore = {};
 
-    this._todoItems = new Subject<TodoItem[]>();
+    this._todoItems = {};
 
     this.channelService.messages.map(msg => msg.payload).subscribe(payload => {
-      const data = payload['data'];
-      data['id'] = payload['pk'];
+      const todoItem = payload['data'];
+      todoItem['id'] = payload['pk'];
 
       if (payload['action'] === 'create') {
         // add new todo_item only if it not exist
-        if (!this.dataStore.todoItems.filter(todo => todo.id === data['id']).length) {
-          this.dataStore.todoItems.push(data);
+        if (!this.dataStore[todoItem.todo_list].filter(todo => todo.id === todoItem.id).length) {
+          this.dataStore[todoItem.todo_list].push(todoItem);
         }
       } else if (payload['action'] === 'update') {
-        this.dataStore.todoItems.forEach((t, i) => {
-          if (t.id === data['id']) { this.dataStore.todoItems[i] = data; }
+        this.dataStore[todoItem.todo_list].forEach((t, i) => {
+          if (t.id === todoItem.id) { this.dataStore[todoItem.todo_list][i] = todoItem; }
         });
       } else if (payload['action'] === 'delete') {
-        this.dataStore.todoItems = this.dataStore.todoItems.filter(todo => todo.id !== data['id']);
+        this.dataStore[todoItem.todo_list] = this.dataStore[todoItem.todo_list].filter(todo => todo.id !== todoItem.id);
       }
-      this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+      this._todoItems[todoItem.todo_list].next(this.dataStore[todoItem.todo_list]);
     });
   }
 
-  get todoItems() {
-    return this._todoItems.asObservable();
-  }
+  getTodoItems(listId: string) {
+    const url = `${this.todoItemsUrl}?todo_list=${listId}`;
 
-  loadAll() {
-    this.http.get(this.todoItemsUrl).map(res => res.json()).subscribe(
+    this._todoItems[listId] = new Subject<TodoItem[]>();
+    this.http.get(url).map(res => res.json()).subscribe(
       data => {
-        this.dataStore.todoItems = data;
-        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+        this.dataStore[listId] = data;
+        this._todoItems[listId].next(this.dataStore[listId]);
       }, error => console.log('Could not load todoItems'));
+    return this._todoItems[listId].asObservable();
   }
 
-  createTodoItem(title: string) {
+  createTodoItem(title: string, listId: string) {
+    const url = `${this.todoItemsUrl}/?todo_list=${listId}`;
     return this.http
-      .post(this.todoItemsUrl, {title: title})
+      .post(url, {title: title,  todo_list: listId})
       .map(response => response.json()).subscribe(data => {
         // sometimes socket can create new todo_item before response come
-        if (!this.dataStore.todoItems.filter(todo => todo.id === data['id']).length) {
-          this.dataStore.todoItems.push(data);
+        if (!this.dataStore[listId].filter(todo => todo.id === data['id']).length) {
+          this.dataStore[listId].push(data);
         }
-        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+        this._todoItems[listId].next(this.dataStore[listId]);
       }, error => console.log('Could not create todo'));
   }
 
   updateTodoItem(todoItem: TodoItem) {
-    const url = `${this.todoItemsUrl}${todoItem.id}/`;
+    const url = `${this.todoItemsUrl}${todoItem.id}/?todo_list=${todoItem.todo_list}`;
     this.http.put(url, todoItem)
       .map(response => response.json())
       .subscribe(data => {
-        this.dataStore.todoItems.forEach((t, i) => {
-          if (t.id === data.id) { this.dataStore.todoItems[i] = data; }
-        });
-
-        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+        this._todoItems[todoItem.todo_list].next(this.dataStore[todoItem.todo_list]);
       }, error => console.log('Could not update todo.'));
   }
 
-  deleteTodoItem(id: number) {
-    const url = `${this.todoItemsUrl}${id}/`;
+  deleteTodoItem(todoItem: TodoItem) {
+    const url = `${this.todoItemsUrl}${todoItem.id}/?todo_list=${todoItem.todo_list}`;
     this.http.delete(url)
       .subscribe(response => {
-        this.dataStore.todoItems = this.dataStore.todoItems.filter(todo => todo.id !== id);
-        this._todoItems.next(Object.assign({}, this.dataStore).todoItems);
+        this.dataStore[todoItem.todo_list] = this.dataStore[
+          todoItem.todo_list].filter(todo => todo.id !== todoItem.id );
+        this._todoItems[todoItem.todo_list].next(this.dataStore[todoItem.todo_list]);
       }, error => console.log('Could not delete todo'));
   }
 }

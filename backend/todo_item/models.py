@@ -23,7 +23,7 @@ class TodoItem(models.Model):
 class TodoItemBinding(WebsocketBinding):
     model = TodoItem
     stream = "todo_item"
-    fields = ("title", "status",)
+    fields = ("title", "status", "todo_list",)
 
     @classmethod
     def group_names(cls, instance):
