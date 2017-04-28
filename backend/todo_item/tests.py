@@ -73,25 +73,48 @@ class TodoListTests(TestCase):
 
 
 class WebSocketTests(ChannelTestCase):
+    def setUp(self):
+        self.client = HttpClient()
+
     def test_creating_new_todo_items_send_notification(self):
-        client = HttpClient()
-        client.join_group("todo_list")
+        todo_list = TodoList.objects.create(title="Products")
+        self.client.join_group(str(todo_list.id))
 
-        TodoItem.objects.create(title="test_item")
+        TodoItem.objects.create(title="test_item", todo_list=todo_list)
 
-        received = client.receive()
+        received = self.client.receive()
 
         self.assertNotEquals(received, None)
 
     def test_cant_add_new_todo_item_by_ws(self):
-        client = HttpClient()
-        client.join_group("todo_list")
+        todo_list = TodoList.objects.create(title="Products")
+        self.client.join_group(str(todo_list.id))
 
         payload = {
             'stream': 'todo_item',
-            'payload': {'data': {'title': 'test_item'}, 'action': 'create',}
+            'payload': {
+                'data': {'title': 'test_item', 'todo_list': str(todo_list.id)},
+                'action': 'create',
+            }
         }
 
-        client.send_and_consume('websocket.receive', path='/api/ws/', text=payload)
+        self.client.send_and_consume('websocket.receive', path='/api/ws/', text=payload)
 
         self.assertEqual(TodoItem.objects.count(), 0)
+
+    def test_todo_lists_have_separated_notifications(self):
+        todo_list1 = TodoList.objects.create(title="Homework")
+        todo_list2 = TodoList.objects.create(title="Products")
+
+        # connect to todo_list1
+        self.client.join_group(str(todo_list1.id))
+        TodoItem.objects.create(title="brush teeth", todo_list=todo_list1)
+
+        # get messages from todo_list1
+        received = self.client.receive()
+        self.assertNotEquals(received, None)
+
+        # not get messages from todo_list2
+        TodoItem.objects.create(title="milk", todo_list=todo_list2)
+        received = self.client.receive()
+        self.assertEquals(received, None)

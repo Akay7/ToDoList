@@ -27,7 +27,8 @@ class TodoItemBinding(WebsocketBinding):
 
     @classmethod
     def group_names(cls, instance):
-        return ("todo_list",)
+        list_id = str(instance.todo_list.id)
+        return (list_id,)
 
     @classmethod
     def has_permission(self, user, action, pk):
