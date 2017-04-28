@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {CookieXSRFStrategy, HttpModule, XSRFStrategy} from '@angular/http';
+import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,11 @@ import { WebSocketService } from './web-socket.service';
 import { TodoListService } from './todo-list.service';
 import { TodoItemService } from './todo-item.service';
 import { OrderByIdPipe } from './order-by-id.pipe';
+
+
+export function xsrfFactory() {
+  return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
+}
 
 @NgModule({
   declarations: [
@@ -27,7 +32,7 @@ import { OrderByIdPipe } from './order-by-id.pipe';
     AppRoutingModule
   ],
   providers: [
-    {provide: XSRFStrategy, useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')},
+    {provide: XSRFStrategy, useFactory: xsrfFactory},
     TodoListService,
     TodoItemService,
     ChannelService,
