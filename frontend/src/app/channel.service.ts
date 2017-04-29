@@ -15,19 +15,26 @@ export interface Message {
 
 @Injectable()
 export class ChannelService {
-  public messages: Subject<Message>  = new Subject<Message>();
+  private messages: Subject<Message>  = new Subject<Message>();
 
-  constructor(private wsService: WebSocketService) {
+  constructor(private wsService: WebSocketService) { }
 
-    // 1. subscribe to chatbox
-    this.messages   = <Subject<Message>>this.wsService
-      .connect(CHANNEL_URL)
+  connect(params: string = '') {
+    let url = `${CHANNEL_URL}`;
+
+    if (params) {
+      url = `${url}?${params}`;
+    }
+
+    this.messages = <Subject<Message>>this.wsService
+      .connect(url)
       .map((response: MessageEvent): Message => {
         let data = JSON.parse(response.data);
         return {
-          stream : data.stream,
-          payload : data.payload
+          stream: data.stream,
+          payload: data.payload
         };
       });
+    return this.messages.asObservable();
   }
 }

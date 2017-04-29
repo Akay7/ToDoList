@@ -1,7 +1,8 @@
 from django.test import TestCase
-from channels.test import ChannelTestCase, HttpClient
+from channels.test import ChannelTestCase, HttpClient, apply_routes
 
 from .models import TodoItem, TodoList
+from todo_list.routing import Demultiplexer
 
 
 class TodoListTests(TestCase):
@@ -78,7 +79,11 @@ class WebSocketTests(ChannelTestCase):
 
     def test_creating_new_todo_items_send_notification(self):
         todo_list = TodoList.objects.create(title="Products")
-        self.client.join_group(str(todo_list.id))
+
+        self.client.send_and_consume(
+            'websocket.connect', path='/api/ws/',
+            content={'query_string': 'todo_list={}'.format(str(todo_list.id))},
+        )
 
         TodoItem.objects.create(title="test_item", todo_list=todo_list)
 
@@ -116,5 +121,14 @@ class WebSocketTests(ChannelTestCase):
 
         # not get messages from todo_list2
         TodoItem.objects.create(title="milk", todo_list=todo_list2)
+        received = self.client.receive()
+        self.assertEquals(received, None)
+
+    def test_if_not_connected_to_todo_list_not_get_notifications(self):
+        todo_list = TodoList.objects.create(title="Products")
+
+        self.client.send_and_consume('websocket.connect', path='/api/ws/')
+        TodoItem.objects.create(title="test_item", todo_list=todo_list)
+
         received = self.client.receive()
         self.assertEquals(received, None)

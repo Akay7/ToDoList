@@ -16,10 +16,11 @@ export class TodoItemService {
   constructor(private http: Http,
               private channelService: ChannelService) {
     this.dataStore = {};
-
     this._todoItems = {};
+  }
 
-    this.channelService.messages.map(msg => msg.payload).subscribe(payload => {
+  connectToChannels(listId: string) {
+    this.channelService.connect(`todo_list=${listId}`).map(msg => msg.payload).subscribe(payload => {
       const todoItem = payload['data'];
       todoItem['id'] = payload['pk'];
 
@@ -40,6 +41,7 @@ export class TodoItemService {
   }
 
   getTodoItems(listId: string) {
+    this.connectToChannels(listId);
     const url = `${this.todoItemsUrl}?todo_list=${listId}`;
 
     this._todoItems[listId] = new Subject<TodoItem[]>();
