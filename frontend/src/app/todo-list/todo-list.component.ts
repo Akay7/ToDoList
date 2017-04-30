@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
 import { TodoItem } from '../todo-item';
@@ -16,8 +16,10 @@ export class TodoListComponent implements OnInit {
   @Input() todoList: TodoList;
   todoItems: TodoItem[];
   selectedTodoItem: TodoItem;
+  isEditTitle = false;
 
   constructor (
+    private router: Router,
     private route: ActivatedRoute,
     private todoListService: TodoListService,
     private todoItemService: TodoItemService
@@ -29,7 +31,26 @@ export class TodoListComponent implements OnInit {
       .subscribe(todoList => {
         this.todoList = todoList;
         this.todoItemService.getTodoItems(this.todoList.id).subscribe(todoItems => this.todoItems = todoItems);
+      }, error => {
+        // when todo_list not exist or can't get redirect to main page
+        this.router.navigate(['/']);
       });
+  }
+
+  editTodoListTitle(): void {
+    this.isEditTitle = true;
+  }
+  saveTodoListTitle(): void {
+    this.todoListService.update(this.todoList).then(
+      success => { this.isEditTitle = false; },
+      error => { console.log(`can't update title`); }
+    );
+  }
+  deleteTodoList(): void {
+    this.todoListService.delete(this.todoList).then(
+      success => { this.router.navigate(['/']); },
+      error => { console.log(`can't delete todo list`); }
+    );
   }
 
   editTodoItem(item: TodoItem): void {

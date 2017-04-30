@@ -26,6 +26,14 @@ export class TodoListService {
       .catch(this.handleError);
   }
 
+  delete(todoList: TodoList): Promise<void> {
+    const url = `${this.todoListUrl}${todoList.id}/`;
+    return this.http.delete(url)
+      .toPromise()
+      .then(() => null)
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('An error accured', error);
     return Promise.reject(error.message || error);
