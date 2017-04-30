@@ -1,3 +1,15 @@
+<div *ngIf="todoList">
+  <div *ngIf="!isEditTitle">
+    <h2>{{ todoList.title }}</h2>
+    <h2 *ngIf="!todoList.title">ToDo list without title</h2>
+    <button (click)="editTodoListTitle()">edit</button>
+  </div>
+  <div *ngIf="isEditTitle">
+    <input type="text" [(ngModel)]="todoList.title">
+    <button (click)="saveTodoListTitle()">save</button>
+  </div>
+</div>
+
 <ul>
   <li *ngFor="let todoItem of todoItems | orderById">
     <input type="checkbox" [(ngModel)]="todoItem.status" (change)="save(todoItem)">
@@ -19,3 +31,4 @@
   <input id="new-item-title" type="text" [(ngModel)]="newItemTitle">
   <button id="new-item-create" [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
 </div>
+<button (click)="deleteTodoList()">Delete full ToDo list</button>

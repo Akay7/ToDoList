@@ -4,10 +4,11 @@ from django.views.generic import TemplateView
 
 from rest_framework.routers import DefaultRouter
 
-from todo_item.views import TodoItemViewSet
+from todo_item.views import TodoItemViewSet, TodoListViewSet
 
 router = DefaultRouter()
 router.register('todo_item', TodoItemViewSet)
+router.register('todo_list', TodoListViewSet)
 
 urlpatterns = [
     url(r'^api/web/', include(router.urls, namespace="api_web")),

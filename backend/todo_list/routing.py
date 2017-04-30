@@ -10,8 +10,18 @@ class Demultiplexer(WebsocketDemultiplexer):
     }
 
     def connection_groups(self, **kwargs):
-        return ("todo_list",)
+        query_params = dict([
+            i.split("=") for i in
+            self.message.content.get('query_string', "").split('&')
+            if "=" in i
+        ])
+
+        groups = []
+        todo_list_id = query_params.get('todo_list')
+        if todo_list_id:
+            groups.append(todo_list_id)
+        return groups
 
 channel_routing = [
-    route_class(Demultiplexer, path="^/api/ws/")
+    route_class(Demultiplexer, path="^/api/ws/$")
 ]
