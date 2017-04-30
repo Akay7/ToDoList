@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { ChannelService } from './channel.service';
 import { TodoItem } from './todo-item';
 import { Subject } from 'rxjs/Subject';
+import {promise} from "selenium-webdriver";
 
 @Injectable()
 export class TodoItemService {
@@ -51,6 +52,14 @@ export class TodoItemService {
         this._todoItems[listId].next(this.dataStore[listId]);
       }, error => console.log('Could not load todoItems'));
     return this._todoItems[listId].asObservable();
+  }
+
+  createTodoItemWithNewList(title: string): Promise<TodoItem> {
+    return this.http
+      .post(this.todoItemsUrl, {title: title})
+      .toPromise()
+      .then(res => res.json() as TodoItem,  error => console.log('Error create todo'));
+
   }
 
   createTodoItem(title: string, listId: string) {

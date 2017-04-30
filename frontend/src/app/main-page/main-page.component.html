@@ -2,6 +2,8 @@
   {{title}}
 </h1>
 
-<p>
-  main-page works!
-</p>
+<div>
+  <input id="new-item-title" type="text" [(ngModel)]="newItemTitle">
+  <button id="new-item-create" [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
+</div>
+
