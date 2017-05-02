@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'channels',
+    'rest_auth',
 
     'todo_item',
 ]
@@ -102,6 +103,8 @@ REST_FRAMEWORK = {
     ),
 }
 
+REST_USE_TOKEN = False
+
 
 # Django channels
 # https://channels.readthedocs.io/en/stable/
@@ -155,3 +158,8 @@ STATICFILES_DIRS = [
     os.path.join(os.path.dirname(BASE_DIR), 'frontend', 'dist'),
 ]
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media', 'static')
+
+
+# Email settings
+# https://docs.djangoproject.com/en/1.11/topics/email/#email-backends
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
