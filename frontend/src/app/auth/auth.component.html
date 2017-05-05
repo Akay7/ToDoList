@@ -1,6 +1,6 @@
 <div *ngIf="user">
   Hi, {{ user.username }}!
-  <button>Log out</button>
+  <button (click)="logout()">Log out</button>
 </div>
 <div *ngIf="!user">
   <form (ngSubmit)="login()" #loginForm="ngForm">

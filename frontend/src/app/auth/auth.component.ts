@@ -16,9 +16,14 @@ export class AuthComponent implements OnInit {
 
   ngOnInit() {
     this.authService.user.subscribe(user => this.user = user);
+    this.authService.errors.subscribe(errors => this.errors = errors);
   }
 
   login() {
-    console.log(this.authService.login(this.auth.username, this.auth.password));
+    this.authService.login(this.auth.username, this.auth.password);
+    this.auth = {username: '', password: ''};
+  }
+  logout() {
+    this.authService.logout();
   }
 }
