@@ -6,6 +6,8 @@ import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainPageComponent } from './main-page/main-page.component';
+import { AuthComponent } from './auth/auth.component';
+import { AuthService } from './auth.service';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ChannelService } from './channel.service';
 import { WebSocketService } from './web-socket.service';
@@ -22,6 +24,7 @@ export function xsrfFactory() {
   declarations: [
     AppComponent,
     MainPageComponent,
+    AuthComponent,
     TodoListComponent,
     OrderByIdPipe
   ],
@@ -33,6 +36,7 @@ export function xsrfFactory() {
   ],
   providers: [
     {provide: XSRFStrategy, useFactory: xsrfFactory},
+    AuthService,
     TodoListService,
     TodoItemService,
     ChannelService,

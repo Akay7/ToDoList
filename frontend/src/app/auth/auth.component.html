@@ -1,0 +1,17 @@
+<div *ngIf="user">
+  Hi, {{ user.username }}!
+  <button>Log out</button>
+</div>
+<div *ngIf="!user">
+  <form (ngSubmit)="login()" #loginForm="ngForm">
+    <ul *ngFor="let error of errors?.non_field_errors">
+      <li>{{ error }}</li>
+    </ul>
+    <input name="username" type="text" placeholder="Username" required
+           [(ngModel)]="auth.username" #username="ngModel">
+    <input name="password" type="password" placeholder="Password" required
+           [(ngModel)]="auth.password" #password="ngModel">
+    <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
+  </form>
+</div>
+<hr>
