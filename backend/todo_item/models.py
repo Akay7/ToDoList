@@ -1,11 +1,26 @@
 from uuid import uuid4
 from django.db import models
+from django.conf import settings
 from channels.binding.websockets import WebsocketBinding
+
+UserModel = settings.AUTH_USER_MODEL
 
 
 class TodoList(models.Model):
+    PRIVATE = 'private'
+    ALLOW_READ = 'read'
+    ALLOW_FULL_ACCESS = 'full_access'
+
+    MODES = (
+        (PRIVATE, 'Private'),
+        (ALLOW_READ, 'Allow read to everyone'),
+        (ALLOW_FULL_ACCESS, 'Allow full access to everyone'),
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     title = models.CharField(max_length=140)
+    owner = models.ForeignKey(UserModel, related_name='todo_lists', null=True, blank=True)
+    mode = models.CharField(max_length=20, choices=MODES, default=ALLOW_FULL_ACCESS)
 
     def __str__(self):
         return self.title

@@ -3,6 +3,7 @@ import django_filters
 
 from .models import TodoItem, TodoList
 from .serializers import TodoItemSerializer, TodoListSerializer
+from .permissions import IsHaveAccessToTodoList
 
 
 class TodoItemFilter(django_filters.FilterSet):
@@ -24,6 +25,7 @@ class TodoItemViewSet(viewsets.ModelViewSet):
 class TodoListViewSet(viewsets.ModelViewSet):
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializer
+    permission_classes = (IsHaveAccessToTodoList,)
 
     def get_queryset(self):
         if self.action == 'list':

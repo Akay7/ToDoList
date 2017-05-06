@@ -1,8 +1,11 @@
 from django.test import TestCase
-from channels.test import ChannelTestCase, HttpClient, apply_routes
+from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
+from channels.test import ChannelTestCase, HttpClient
 
 from .models import TodoItem, TodoList
-from todo_list.routing import Demultiplexer
+
+UserModel = get_user_model()
 
 
 class TodoListTests(TestCase):
@@ -71,6 +74,175 @@ class TodoListTests(TestCase):
         self.assertNotContains(response, todo_item1)
         self.assertContains(response, todo_item2)
         self.assertContains(response, todo_item3)
+
+
+class TodoListPermissionTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.owner = UserModel.objects.create(username='owner')
+        self.other_person = UserModel.objects.create(username='other_person')
+        self.todo_list = TodoList.objects.create(title='fruits', owner=self.owner)
+        self.todo_item1 = TodoItem.objects.create(title='pineapple', todo_list=self.todo_list)
+
+    def test_everyone_have_access_to_todo_list_with_full_access(self):
+        self.client.force_login(self.owner)
+        # owner can change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'tropic fruits'}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # owner can add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'guava', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 201)
+
+        self.client.force_login(self.other_person)
+        # other user can change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'fruits list'}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # other user can add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'banana', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 201)
+
+        self.client.logout()
+        # unauth person can change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'fruits fruits fruits!!!'}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # unauth person can add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'mango', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 201)
+
+    def test_other_person_can_read_but_cant_change_read_only_todo_list(self):
+        self.todo_list.mode = TodoList.ALLOW_READ
+        self.todo_list.save()
+
+        self.client.force_login(self.owner)
+        # owner can change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'tropic fruits'}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # owner can add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'guava', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 201)
+
+        self.client.force_login(self.other_person)
+        # other user can read todo_list
+        response = self.client.get('/api/web/todo_list/{}/'.format(self.todo_list.id))
+        self.assertEqual(response.status_code, 200)
+        # other user can read todo_items
+        response = self.client.get('/api/web/todo_item/', {'todo_list': self.todo_list.id})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+
+        # other user can't change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'fruits list'}
+        )
+        self.assertEqual(response.status_code, 403)
+
+        # other user can't add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'banana', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 400)
+
+        self.client.logout()
+        # unauth person can read todo_list
+        response = self.client.get('/api/web/todo_list/{}/'.format(self.todo_list.id))
+        self.assertEqual(response.status_code, 200)
+        # unauth person can read todo_items
+        response = self.client.get('/api/web/todo_item/', {'todo_list': self.todo_list.id})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+
+        # unauth person can't change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'fruits fruits fruits!!!'}
+        )
+        self.assertEqual(response.status_code, 403)
+
+        # unauth person can't add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'mango', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_other_person_cant_change_private_todo_list(self):
+        self.todo_list.mode = TodoList.PRIVATE
+        self.todo_list.save()
+
+        self.client.force_login(self.owner)
+        # owner can change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'tropic fruits'}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # owner can add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'guava', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 201)
+
+        self.client.force_login(self.other_person)
+        # other user can't change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'fruits list'}
+        )
+        self.assertEqual(response.status_code, 403)
+
+        # other user can't add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'banana', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 400)
+
+        self.client.logout()
+        # unauth person can't change name of todo_list
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(self.todo_list.id),
+            {'title': 'fruits fruits fruits!!!'}
+        )
+        self.assertEqual(response.status_code, 403)
+
+        # unauth person can't add new todo_items
+        response = self.client.post(
+            '/api/web/todo_item/',
+            {'title': 'mango', 'todo_list': self.todo_list.id}
+        )
+        self.assertEqual(response.status_code, 400)
 
 
 class WebSocketTests(ChannelTestCase):
