@@ -50,3 +50,13 @@ class TodoItemBinding(WebsocketBinding):
     def has_permission(self, user, action, pk):
         # CRUD just trough REST API
         return False
+
+
+class Watch(models.Model):
+    user = models.ForeignKey(UserModel)
+    todo_list = models.ForeignKey(TodoList)
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(UserModel)
+    todo_list = models.ForeignKey(TodoList)

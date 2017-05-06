@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework import serializers
-from .models import TodoItem, TodoList
+from .models import TodoItem, TodoList, Watch, Favorite
 
 
 class TodoListSerializer(serializers.ModelSerializer):
@@ -30,3 +30,21 @@ class TodoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = TodoItem
         fields = ('id', 'title', 'status', 'todo_list',)
+
+
+class WatchSerializer(serializers.ModelSerializer):
+    todo_list = TodoListChoices()
+
+    class Meta:
+        model = Watch
+        fields = ('id', 'user', 'todo_list',)
+        read_only_fields = ('user',)
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    todo_list = TodoListChoices()
+
+    class Meta:
+        model = Favorite
+        fields = ('id', 'user', 'todo_list',)
+        read_only_fields = ('user',)

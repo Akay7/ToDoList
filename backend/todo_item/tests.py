@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from channels.test import ChannelTestCase, HttpClient
 
-from .models import TodoItem, TodoList
+from .models import TodoItem, TodoList, Watch
 
 UserModel = get_user_model()
 
@@ -249,7 +249,7 @@ class WebSocketTests(ChannelTestCase):
     def setUp(self):
         self.client = HttpClient()
 
-    def test_creating_new_todo_items_send_notification(self):
+    def test_creating_new_todo_items_in_public_todo_list_send_notification(self):
         todo_list = TodoList.objects.create(title="Products")
 
         self.client.send_and_consume(
@@ -262,6 +262,32 @@ class WebSocketTests(ChannelTestCase):
         received = self.client.receive()
 
         self.assertNotEquals(received, None)
+
+    def test_can_subscribe_to_read_only_todo_list(self):
+        todo_list = TodoList.objects.create(title="Products", mode=TodoList.ALLOW_READ)
+
+        self.client.send_and_consume(
+            'websocket.connect', path='/api/ws/',
+            content={'query_string': 'todo_list={}'.format(str(todo_list.id))},
+        )
+
+        TodoItem.objects.create(title="test_item", todo_list=todo_list)
+
+        received = self.client.receive()
+        self.assertNotEquals(received, None)
+
+    def test_cant_subscribe_to_private_todo_list(self):
+        todo_list = TodoList.objects.create(title="Products", mode=TodoList.PRIVATE)
+
+        self.client.send_and_consume(
+            'websocket.connect', path='/api/ws/',
+            content={'query_string': 'todo_list={}'.format(str(todo_list.id))},
+        )
+
+        TodoItem.objects.create(title="test_item", todo_list=todo_list)
+
+        received = self.client.receive()
+        self.assertEquals(received, None)
 
     def test_cant_add_new_todo_item_by_ws(self):
         todo_list = TodoList.objects.create(title="Products")
@@ -304,3 +330,31 @@ class WebSocketTests(ChannelTestCase):
 
         received = self.client.receive()
         self.assertEquals(received, None)
+
+    def test_get_notification_from_watched_not_private_todo_lists_and_own_private(self):
+        user = UserModel.objects.create(username='user')
+        todo_list_private_own = TodoList.objects.create(title="Private own", mode=TodoList.PRIVATE, owner=user)
+        todo_list_private = TodoList.objects.create(title="Private", mode=TodoList.PRIVATE)
+        todo_list_read_only = TodoList.objects.create(title="Read only", mode=TodoList.ALLOW_READ)
+        todo_list_public = TodoList.objects.create(title="Public", mode=TodoList.ALLOW_FULL_ACCESS)
+
+        [Watch.objects.create(user=user, todo_list=todo_list) for todo_list  in TodoList.objects.all()]
+
+        self.client.force_login(user)
+        self.client.send_and_consume('websocket.connect', path='/api/ws/')
+
+        TodoItem.objects.create(title="test_item1", todo_list=todo_list_private_own)
+        received = self.client.receive()
+        self.assertNotEquals(received, None)
+
+        TodoItem.objects.create(title="test_item2", todo_list=todo_list_private)
+        received = self.client.receive()
+        self.assertEquals(received, None)
+
+        TodoItem.objects.create(title="test_item3", todo_list=todo_list_read_only)
+        received = self.client.receive()
+        self.assertNotEquals(received, None)
+
+        TodoItem.objects.create(title="test_item4", todo_list=todo_list_public)
+        received = self.client.receive()
+        self.assertNotEquals(received, None)

@@ -8,12 +8,16 @@ from rest_auth.views import (
     PasswordResetView, PasswordResetConfirmView
 )
 
-from todo_item.views import TodoItemViewSet, TodoListViewSet
+from todo_item.views import (
+    TodoItemViewSet, TodoListViewSet, WatchViewSet, FavoriteViewSet,
+)
 from user_profile.views import LoginDetailUserView
 
 router = DefaultRouter()
 router.register('todo_item', TodoItemViewSet)
 router.register('todo_list', TodoListViewSet)
+router.register('watch', WatchViewSet)
+router.register('favorite', FavoriteViewSet)
 
 auth_patterns = [
     # URLs that do not require a session or valid token
@@ -34,6 +38,7 @@ urlpatterns = [
     url(r'^api/web/', include(auth_patterns, namespace="rest_auth")),
 
     url(r'^admin/', admin.site.urls),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='drf-auth')),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^', TemplateView.as_view(template_name='index.html')),
 ]
