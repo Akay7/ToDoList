@@ -1,12 +1,27 @@
 from django.db.models import Q
 from rest_framework import serializers
 from .models import TodoItem, TodoList, Watch, Favorite
+from django.contrib.auth import get_user_model
+
+UserModel = get_user_model()
+
+
+class UserChoices(serializers.PrimaryKeyRelatedField):
+    queryset = UserModel
+
+    def get_queryset(self):
+        user = self.context['request'].user
+        if not user.is_authenticated():
+            return self.queryset.objects.none()
+        return self.queryset.objects.filter(id=user.id)
 
 
 class TodoListSerializer(serializers.ModelSerializer):
+    owner = UserChoices(allow_null=True, required=False)
+
     class Meta:
         model = TodoList
-        fields = ('id', 'title',)
+        fields = ('id', 'title', 'owner',)
 
 
 class TodoListChoices(serializers.PrimaryKeyRelatedField):

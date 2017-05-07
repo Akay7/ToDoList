@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from channels.test import ChannelTestCase, HttpClient
 
-from .models import TodoItem, TodoList, Watch
+from .models import TodoItem, TodoList, Watch, Favorite
 
 UserModel = get_user_model()
 
@@ -34,8 +34,62 @@ class TodoListTests(TestCase):
         # todo_lists must exists in db
         self.assertEqual(TodoList.objects.count(), qty_todo_items_before + 2)
 
-        response = self.client.get('/api/web/todo_item/')
+        response = self.client.get('/api/web/todo_list/')
         self.assertEqual(len(response.json()), 0)
+
+    def test_logged_user_can_create_many_todo_lists_can_look_at_them_without_direct_link(self):
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+        qty_todo_items_before = TodoList.objects.count()
+        payload = {'title': 'Homework', 'owner': user.id}
+        response = self.client.post('/api/web/todo_list/', payload)
+        self.assertEqual(response.status_code, 201)
+        payload = {'title': 'Products', 'owner': user.id}
+        response = self.client.post('/api/web/todo_list/', payload)
+        self.assertEqual(response.status_code, 201)
+
+        # todo_lists must exists in db
+        self.assertEqual(TodoList.objects.count(), qty_todo_items_before + 2)
+        self.assertEqual(TodoList.objects.filter(owner=user).count(), qty_todo_items_before + 2)
+
+        response = self.client.get('/api/web/todo_list/')
+        self.assertEqual(len(response.json()), 2)
+
+    def test_can_look_at_own_todo_lists(self):
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+        todo_list_private_own = TodoList.objects.create(title="Private own", mode=TodoList.PRIVATE, owner=user)
+        todo_list_private = TodoList.objects.create(title="Private", mode=TodoList.PRIVATE)
+        todo_list_read_only = TodoList.objects.create(title="Read only", mode=TodoList.ALLOW_READ)
+        todo_list_public = TodoList.objects.create(title="Public", mode=TodoList.ALLOW_FULL_ACCESS)
+
+        response = self.client.get('/api/web/todo_list/')
+        self.assertEqual(len(response.json()), 1)
+
+    def test_can_see_list_of_favorite_todo_lists(self):
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+        todo_list_private_own = TodoList.objects.create(title="Private own", mode=TodoList.PRIVATE, owner=user)
+        todo_list_private = TodoList.objects.create(title="Private", mode=TodoList.PRIVATE)
+        todo_list_read_only = TodoList.objects.create(title="Read only", mode=TodoList.ALLOW_READ)
+        todo_list_public = TodoList.objects.create(title="Public", mode=TodoList.ALLOW_FULL_ACCESS)
+
+        [Favorite.objects.create(user=user, todo_list=todo_list) for todo_list in TodoList.objects.all()]
+        response = self.client.get('/api/web/todo_list/')
+        self.assertEqual(len(response.json()), 3)
+
+    def test_can_see_list_of_wathed_todo_lists(self):
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+        todo_list_private_own = TodoList.objects.create(title="Private own", mode=TodoList.PRIVATE, owner=user)
+        todo_list_private = TodoList.objects.create(title="Private", mode=TodoList.PRIVATE)
+        todo_list_read_only = TodoList.objects.create(title="Read only", mode=TodoList.ALLOW_READ)
+        todo_list_public = TodoList.objects.create(title="Public", mode=TodoList.ALLOW_FULL_ACCESS)
+
+        [Watch.objects.create(user=user, todo_list=todo_list) for todo_list  in TodoList.objects.all()]
+        response = self.client.get('/api/web/todo_list/')
+        self.assertEqual(len(response.json()), 3)
+
 
     def test_can_get_access_to_todo_list_by_direct_link(self):
         qty_todo_items_before = TodoList.objects.count()

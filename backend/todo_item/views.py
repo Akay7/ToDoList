@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 import django_filters
@@ -33,7 +34,16 @@ class TodoListViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.action == 'list':
-            return self.queryset.none()
+            user = self.request.user
+
+            if not user.is_authenticated():
+                return self.queryset.none()
+
+            return self.queryset.filter(Q(owner=user) | (
+                (Q(favorite__user=user) | Q(watch__user=user)) &
+                Q(mode__in=[TodoList.ALLOW_READ, TodoList.ALLOW_FULL_ACCESS])
+            ))
+
         return self.queryset.all()
 
 
