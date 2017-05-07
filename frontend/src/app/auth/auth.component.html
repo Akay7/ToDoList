@@ -1,5 +1,6 @@
 <div *ngIf="user">
-  Hi, {{ user.username }}!
+  Hi, {{ user.username }}! You can look your
+  <button [routerLink]="['/my-todo-lists']">todo lists</button> or
   <button (click)="logout()">Log out</button>
 </div>
 <div *ngIf="!user">

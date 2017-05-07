@@ -9,8 +9,7 @@
     <span class="badge">own</span>
     <span class="badge">favorite</span>
     <span class="badge">subscribe</span>
-    <div *ngIf="selectedTodoList===todoList">
-      <button [routerLink]="['/', todoList.id]">edit</button>
-    </div>
+    <button *ngIf="selectedTodoList===todoList"
+            [routerLink]="['/', todoList.id]">edit</button>
   </div>
 </div>

@@ -5,7 +5,6 @@
     <button (click)="editTodoListTitle()">edit</button>
   </div>
   <div *ngIf="isEditTitle">
-    &#8678;
     <input type="text" [(ngModel)]="todoList.title">
     <button (click)="saveTodoListTitle()">save</button>
   </div>

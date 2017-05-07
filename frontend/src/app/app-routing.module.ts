@@ -7,7 +7,7 @@ import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
-  { path: 'my-todoList-lists', component: MyTodoListsComponent },
+  { path: 'my-todo-lists', component: MyTodoListsComponent },
   { path: ':id', component: TodoListComponent }
 ];
 
