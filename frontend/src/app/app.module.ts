@@ -14,6 +14,7 @@ import { WebSocketService } from './web-socket.service';
 import { TodoListService } from './todo-list.service';
 import { TodoItemService } from './todo-item.service';
 import { OrderByIdPipe } from './order-by-id.pipe';
+import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
 
 
 export function xsrfFactory() {
@@ -24,6 +25,7 @@ export function xsrfFactory() {
   declarations: [
     AppComponent,
     MainPageComponent,
+    MyTodoListsComponent,
     AuthComponent,
     TodoListComponent,
     OrderByIdPipe
