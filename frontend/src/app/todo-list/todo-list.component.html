@@ -8,6 +8,8 @@
     <input type="text" [(ngModel)]="todoList.title">
     <button (click)="saveTodoListTitle()">save</button>
   </div>
+  <button *ngIf="todoList.id | watch" (click)="unwatch(todoList.id)">Unwatch</button>
+  <button *ngIf="!(todoList.id | watch)" (click)="watch(todoList.id)">Watch</button>
 </div>
 
 <ul>

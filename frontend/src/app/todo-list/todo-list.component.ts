@@ -6,6 +6,7 @@ import { TodoItem } from '../todo-item';
 import { TodoList } from '../todo-list';
 import { TodoItemService } from '../todo-item.service';
 import { TodoListService } from '../todo-list.service';
+import { WatchService } from '../watch.service';
 
 @Component({
   selector: 'app-todo-items',
@@ -22,7 +23,8 @@ export class TodoListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private todoListService: TodoListService,
-    private todoItemService: TodoItemService
+    private todoItemService: TodoItemService,
+    private watchService: WatchService
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +53,12 @@ export class TodoListComponent implements OnInit {
       success => { this.router.navigate(['/']); },
       error => { console.log(`can't delete todo list`); }
     );
+  }
+  watch(todoListId) {
+    this.watchService.startWatch(todoListId);
+  }
+  unwatch(todoListId) {
+    this.watchService.stopWatch(todoListId);
   }
 
   editTodoItem(item: TodoItem): void {

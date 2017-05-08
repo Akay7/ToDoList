@@ -13,8 +13,10 @@ import { ChannelService } from './channel.service';
 import { WebSocketService } from './web-socket.service';
 import { TodoListService } from './todo-list.service';
 import { TodoItemService } from './todo-item.service';
+import { WatchService } from './watch.service';
 import { OrderByIdPipe } from './order-by-id.pipe';
 import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
+import { WatchPipe } from './watch.pipe';
 
 
 export function xsrfFactory() {
@@ -28,7 +30,8 @@ export function xsrfFactory() {
     MyTodoListsComponent,
     AuthComponent,
     TodoListComponent,
-    OrderByIdPipe
+    OrderByIdPipe,
+    WatchPipe
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ export function xsrfFactory() {
     AuthService,
     TodoListService,
     TodoItemService,
+    WatchService,
     ChannelService,
     WebSocketService
   ],
