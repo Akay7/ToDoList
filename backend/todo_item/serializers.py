@@ -1,7 +1,11 @@
-from django.db.models import Q
-from rest_framework import serializers
-from .models import TodoItem, TodoList, Watch, Favorite
 from django.contrib.auth import get_user_model
+from django.db.models import Q
+
+from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
+
+from .models import TodoItem, TodoList, Watch, Favorite
+
 
 UserModel = get_user_model()
 
@@ -49,17 +53,27 @@ class TodoItemSerializer(serializers.ModelSerializer):
 
 class WatchSerializer(serializers.ModelSerializer):
     todo_list = TodoListChoices()
+    user = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(), read_only=True
+    )
 
     class Meta:
         model = Watch
-        fields = ('id', 'user', 'todo_list',)
-        read_only_fields = ('user',)
+        fields = ('user', 'todo_list',)
+        validators = [
+            UniqueTogetherValidator(queryset=model.objects.all(), fields=('user', 'todo_list',))
+        ]
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
     todo_list = TodoListChoices()
+    user = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(), read_only=True
+    )
 
     class Meta:
         model = Favorite
-        fields = ('id', 'user', 'todo_list',)
-        read_only_fields = ('user',)
+        fields = ('user', 'todo_list',)
+        validators = [
+            UniqueTogetherValidator(queryset=model.objects.all(), fields=('user', 'todo_list',))
+        ]

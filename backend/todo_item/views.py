@@ -51,21 +51,17 @@ class WatchViewSet(viewsets.ModelViewSet):
     queryset = Watch.objects.all()
     serializer_class = WatchSerializer
     permission_classes = (IsAuthenticated,)
+    lookup_field = 'todo_list'
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
 
 class FavoriteViewSet(viewsets.ModelViewSet):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
     permission_classes = (IsAuthenticated,)
+    lookup_field = 'todo_list'
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)

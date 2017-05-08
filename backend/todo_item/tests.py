@@ -90,7 +90,6 @@ class TodoListTests(TestCase):
         response = self.client.get('/api/web/todo_list/')
         self.assertEqual(len(response.json()), 3)
 
-
     def test_can_get_access_to_todo_list_by_direct_link(self):
         qty_todo_items_before = TodoList.objects.count()
         payload = {'title': 'Homework'}
@@ -128,6 +127,30 @@ class TodoListTests(TestCase):
         self.assertNotContains(response, todo_item1)
         self.assertContains(response, todo_item2)
         self.assertContains(response, todo_item3)
+
+    def test_cant_watch_at_same_todo_list_twice(self):
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+        todo_list = TodoList.objects.create(title="Fruits")
+
+        response = self.client.post('/api/web/watch/', {'todo_list': todo_list.id})
+        self.assertEqual(response.status_code, 201)
+
+        # can't watch second time
+        response = self.client.post('/api/web/watch/', {'todo_list': todo_list.id})
+        self.assertEqual(response.status_code, 400)
+
+    def test_cant_make_favorite_same_todo_list_twice(self):
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+        todo_list = TodoList.objects.create(title="Fruits")
+
+        response = self.client.post('/api/web/favorite/', {'todo_list': todo_list.id})
+        self.assertEqual(response.status_code, 201)
+
+        # can't make favorite second time
+        response = self.client.post('/api/web/favorite/', {'todo_list': todo_list.id})
+        self.assertEqual(response.status_code, 400)
 
 
 class TodoListPermissionTest(TestCase):

@@ -55,7 +55,13 @@ class Watch(models.Model):
     user = models.ForeignKey(UserModel)
     todo_list = models.ForeignKey(TodoList)
 
+    class Meta:
+        unique_together = (('user', 'todo_list',),)
+
 
 class Favorite(models.Model):
     user = models.ForeignKey(UserModel)
     todo_list = models.ForeignKey(TodoList)
+
+    class Meta:
+        unique_together = (('user', 'todo_list',),)
