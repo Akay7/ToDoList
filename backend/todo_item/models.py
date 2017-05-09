@@ -28,7 +28,7 @@ class TodoList(models.Model):
 
 class TodoItem(models.Model):
     todo_list = models.ForeignKey(TodoList, related_name="todo_items", null=True)
-    title = models.CharField(max_length=140, unique=True)
+    title = models.CharField(max_length=140)
     status = models.BooleanField(default=False)
 
     def __str__(self):
