@@ -49,4 +49,20 @@ export class AuthService {
         this._user.next(null);
       });
   }
+
+  passwordReset(email: string) {
+    const url = `${this.authUrl}password/reset/`;
+    return this.http.post(url, {email: email}).toPromise();
+  }
+
+  passwordResetConfirm(uid, token, new_password1, new_password2) {
+    const url = `${this.authUrl}password/reset/confirm/`;
+    const payload = {
+      uid: uid,
+      token: token,
+      new_password1: new_password1,
+      new_password2: new_password2
+    };
+    return this.http.post(url, payload).toPromise();
+  }
 }

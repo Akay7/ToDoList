@@ -20,6 +20,8 @@ import { WatchPipe } from './watch.pipe';
 import { OrderByIdPipe } from './order-by-id.pipe';
 import { FavoritePipe } from './favorite.pipe';
 import { OwnerPipe } from './owner.pipe';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { PasswordResetConfirmComponent } from './password-reset-confirm/password-reset-confirm.component';
 
 
 export function xsrfFactory() {
@@ -33,10 +35,12 @@ export function xsrfFactory() {
     MyTodoListsComponent,
     AuthComponent,
     TodoListComponent,
+    PasswordResetComponent,
     OrderByIdPipe,
     WatchPipe,
     FavoritePipe,
-    OwnerPipe
+    OwnerPipe,
+    PasswordResetConfirmComponent
   ],
   imports: [
     BrowserModule,
