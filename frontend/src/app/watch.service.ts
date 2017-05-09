@@ -38,9 +38,7 @@ export class WatchService {
       .delete(`${this.watchUrl}${todoListId}/`)
       .map(response => response.json())
       .subscribe(data => {
-        this._watchStore = this._watchStore.filter(watch => {
-          return watch.todo_list !== todoListId;
-        });
+        this._watchStore = this._watchStore.filter(w => w.todo_list !== todoListId);
         this._watch.next(this._watchStore);
       }, error => console.log('Could not unwatch Todo list'));
   }

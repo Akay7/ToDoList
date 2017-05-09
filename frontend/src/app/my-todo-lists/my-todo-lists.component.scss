@@ -6,10 +6,18 @@
     border-bottom: 1px solid black;
   }
 
-  span {
+  .badge {
     float:right;
-    background-color: lightblue;
     border-radius: 2px;
     margin: 2px;
+    &.own {
+      background-color: green;
+    }
+    &.favorite {
+      background-color: red;
+    }
+    &.watch {
+      background-color: dodgerblue;
+    }
   }
 }

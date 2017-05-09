@@ -15,7 +15,7 @@ export class WatchPipe implements PipeTransform {
   }
 
   transform(value: any, args?: any): any {
-    return this.watch.filter(w => w.todo_list === value).length;
+    return !!this.watch.filter(w => w.todo_list === value).length;
   }
 
 }

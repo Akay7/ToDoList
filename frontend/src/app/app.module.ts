@@ -7,16 +7,18 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainPageComponent } from './main-page/main-page.component';
 import { AuthComponent } from './auth/auth.component';
-import { AuthService } from './auth.service';
+import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ChannelService } from './channel.service';
 import { WebSocketService } from './web-socket.service';
+import { AuthService } from './auth.service';
 import { TodoListService } from './todo-list.service';
 import { TodoItemService } from './todo-item.service';
 import { WatchService } from './watch.service';
-import { OrderByIdPipe } from './order-by-id.pipe';
-import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
+import { FavoriteService } from './favorite.service';
 import { WatchPipe } from './watch.pipe';
+import { OrderByIdPipe } from './order-by-id.pipe';
+import { FavoritePipe } from './favorite.pipe';
 
 
 export function xsrfFactory() {
@@ -31,7 +33,8 @@ export function xsrfFactory() {
     AuthComponent,
     TodoListComponent,
     OrderByIdPipe,
-    WatchPipe
+    WatchPipe,
+    FavoritePipe
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ export function xsrfFactory() {
     TodoListService,
     TodoItemService,
     WatchService,
+    FavoriteService,
     ChannelService,
     WebSocketService
   ],

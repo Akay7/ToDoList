@@ -6,9 +6,9 @@
   <div class="todoList" *ngFor="let todoList of todoLists" (click)="select(todoList)">
     {{ todoList.title ? todoList.title : 'Empty Todo list title' }}
 
-    <span class="badge">own</span>
-    <span class="badge">favorite</span>
-    <span class="badge" *ngIf="todoList.id | watch">watch</span>
+    <span class="badge own">own</span>
+    <span class="badge favorite" *ngIf="todoList.id | favorite">favorite</span>
+    <span class="badge watch" *ngIf="todoList.id | watch">watch</span>
     <button *ngIf="selectedTodoList===todoList"
             [routerLink]="['/', todoList.id]">edit</button>
   </div>

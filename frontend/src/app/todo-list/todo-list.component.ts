@@ -7,6 +7,7 @@ import { TodoList } from '../todo-list';
 import { TodoItemService } from '../todo-item.service';
 import { TodoListService } from '../todo-list.service';
 import { WatchService } from '../watch.service';
+import {FavoriteService} from "../favorite.service";
 
 @Component({
   selector: 'app-todo-items',
@@ -24,7 +25,8 @@ export class TodoListComponent implements OnInit {
     private route: ActivatedRoute,
     private todoListService: TodoListService,
     private todoItemService: TodoItemService,
-    private watchService: WatchService
+    private watchService: WatchService,
+    private favoriteService: FavoriteService
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +61,13 @@ export class TodoListComponent implements OnInit {
   }
   unwatch(todoListId) {
     this.watchService.stopWatch(todoListId);
+  }
+
+  addToFavorite(todoListId) {
+    this.favoriteService.addToFavorite(todoListId);
+  }
+  removeFromFavorite(todoListId) {
+    this.favoriteService.removeFromFavorite(todoListId);
   }
 
   editTodoItem(item: TodoItem): void {
