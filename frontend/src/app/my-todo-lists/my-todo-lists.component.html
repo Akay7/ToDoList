@@ -6,7 +6,7 @@
   <div class="todoList" *ngFor="let todoList of todoLists" (click)="select(todoList)">
     {{ todoList.title ? todoList.title : 'Empty Todo list title' }}
 
-    <span class="badge own">own</span>
+    <span class="badge own" *ngIf="todoList | owner">own</span>
     <span class="badge favorite" *ngIf="todoList | favorite">favorite</span>
     <span class="badge watch" *ngIf="todoList | watch">watch</span>
     <button *ngIf="selectedTodoList===todoList"
