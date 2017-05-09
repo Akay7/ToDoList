@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Favorite } from './favorite';
 import { FavoriteService } from './favorite.service';
+import { TodoList } from './todo-list';
 
 @Pipe({
   name: 'favorite',
@@ -13,8 +14,8 @@ export class FavoritePipe implements PipeTransform {
     this.favoriteService.favorite.subscribe(favorite => this.favorite = favorite);
   }
 
-  transform(value: any, args?: any): any {
-    return !!this.favorite.filter(f => f.todo_list === value).length;
+  transform(todoList: TodoList, args?: any): any {
+    return !!this.favorite.filter(f => f.todo_list === todoList.id).length;
   }
 
 }

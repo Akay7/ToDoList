@@ -19,6 +19,7 @@ import { FavoriteService } from './favorite.service';
 import { WatchPipe } from './watch.pipe';
 import { OrderByIdPipe } from './order-by-id.pipe';
 import { FavoritePipe } from './favorite.pipe';
+import { OwnerPipe } from './owner.pipe';
 
 
 export function xsrfFactory() {
@@ -34,7 +35,8 @@ export function xsrfFactory() {
     TodoListComponent,
     OrderByIdPipe,
     WatchPipe,
-    FavoritePipe
+    FavoritePipe,
+    OwnerPipe
   ],
   imports: [
     BrowserModule,

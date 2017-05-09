@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { WatchService } from './watch.service';
 import { Watch } from './watch';
+import { TodoList } from 'app/todo-list';
 
 @Pipe({
   name: 'watch',
@@ -14,8 +15,8 @@ export class WatchPipe implements PipeTransform {
     this.watchService.watch.subscribe(watch => this.watch = watch);
   }
 
-  transform(value: any, args?: any): any {
-    return !!this.watch.filter(w => w.todo_list === value).length;
+  transform(todoList: TodoList, args?: any): any {
+    return !!this.watch.filter(w => w.todo_list === todoList.id).length;
   }
 
 }

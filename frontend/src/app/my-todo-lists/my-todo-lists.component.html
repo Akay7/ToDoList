@@ -7,8 +7,8 @@
     {{ todoList.title ? todoList.title : 'Empty Todo list title' }}
 
     <span class="badge own">own</span>
-    <span class="badge favorite" *ngIf="todoList.id | favorite">favorite</span>
-    <span class="badge watch" *ngIf="todoList.id | watch">watch</span>
+    <span class="badge favorite" *ngIf="todoList | favorite">favorite</span>
+    <span class="badge watch" *ngIf="todoList | watch">watch</span>
     <button *ngIf="selectedTodoList===todoList"
             [routerLink]="['/', todoList.id]">edit</button>
   </div>

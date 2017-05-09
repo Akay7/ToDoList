@@ -10,7 +10,6 @@ export class FavoriteService {
   private _favoriteStore: Favorite[];
 
   constructor(private http: Http) {
-    console.log('in constructor');
     this.http.get(this.favoriteUrl)
       .map(res => res.json())
       .subscribe(data => {

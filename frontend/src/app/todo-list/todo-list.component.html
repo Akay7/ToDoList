@@ -8,11 +8,11 @@
     <input type="text" [(ngModel)]="todoList.title">
     <button (click)="saveTodoListTitle()">save</button>
   </div>
-  <button *ngIf="todoList.id | watch" (click)="unwatch(todoList.id)">Unwatch</button>
-  <button *ngIf="!(todoList.id | watch)" (click)="watch(todoList.id)">Watch</button>
+  <button *ngIf="todoList | watch" (click)="unwatch(todoList.id)">Unwatch</button>
+  <button *ngIf="!(todoList | watch)" (click)="watch(todoList.id)">Watch</button>
 
-  <button *ngIf="todoList.id | favorite" (click)="removeFromFavorite(todoList.id)">Remove from Favorite</button>
-  <button *ngIf="!(todoList.id | favorite)" (click)="addToFavorite(todoList.id)">Add to Favorite</button>
+  <button *ngIf="todoList | favorite" (click)="removeFromFavorite(todoList.id)">Remove from Favorite</button>
+  <button *ngIf="!(todoList | favorite)" (click)="addToFavorite(todoList.id)">Add to Favorite</button>
 </div>
 
 <ul>

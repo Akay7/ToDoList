@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import {Subject} from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 
 import {User} from './user';
@@ -8,21 +9,20 @@ import {User} from './user';
 @Injectable()
 export class AuthService {
   private authUrl = '/api/web/';
-  private _user: Subject<User>;
+  private _user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   private _errors: Subject<{string: Array<string>}>;
 
   constructor(private http: Http) {
-    this._user = new Subject<User>();
     this._errors = new Subject<{string: Array<string>}>();
-  }
-
-  get user() {
     const url = `${this.authUrl}user/`;
     this.http.get(url)
       .map(res => res.json())
       .subscribe(data => {
         this._user.next(data);
       });
+  }
+
+  get user() {
     return this._user.asObservable();
   }
   get errors() {
@@ -46,7 +46,7 @@ export class AuthService {
     const url = `${this.authUrl}logout/`;
     this.http.post(url, {})
       .subscribe(res => {
-        this._user.next();
+        this._user.next(null);
       });
   }
 }
