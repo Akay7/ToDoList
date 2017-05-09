@@ -7,6 +7,7 @@ from rest_auth.views import (
     LogoutView, UserDetailsView, PasswordChangeView,
     PasswordResetView, PasswordResetConfirmView
 )
+from rest_auth.registration.views import VerifyEmailView
 
 from todo_item.views import (
     TodoItemViewSet, TodoListViewSet, WatchViewSet, FavoriteViewSet,
@@ -33,6 +34,7 @@ auth_patterns = [
         name='rest_password_change'),
 
     url(r'^registration/$', RegisterUserDetailView.as_view(), name='rest_register'),
+    url(r'^registration/verify-email/$', VerifyEmailView.as_view(), name='rest_verify_email'),
 ]
 
 urlpatterns = [
