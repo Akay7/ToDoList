@@ -11,7 +11,7 @@ from rest_auth.views import (
 from todo_item.views import (
     TodoItemViewSet, TodoListViewSet, WatchViewSet, FavoriteViewSet,
 )
-from user_profile.views import LoginDetailUserView
+from user_profile.views import LoginUserDetailView, RegisterUserDetailView
 
 router = DefaultRouter()
 router.register('todo_item', TodoItemViewSet)
@@ -25,12 +25,14 @@ auth_patterns = [
         name='rest_password_reset'),
     url(r'^password/reset/confirm/$', PasswordResetConfirmView.as_view(),
         name='rest_password_reset_confirm'),
-    url(r'^login/$', LoginDetailUserView.as_view(), name='rest_login'),
+    url(r'^login/$', LoginUserDetailView.as_view(), name='rest_login'),
     # URLs that require a user to be logged in with a valid session / token.
     url(r'^logout/$', LogoutView.as_view(), name='rest_logout'),
     url(r'^user/$', UserDetailsView.as_view(), name='rest_user_details'),
     url(r'^password/change/$', PasswordChangeView.as_view(),
         name='rest_password_change'),
+
+    url(r'^registration/$', RegisterUserDetailView.as_view(), name='rest_register'),
 ]
 
 urlpatterns = [
@@ -41,4 +43,9 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='drf-auth')),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^', TemplateView.as_view(template_name='index.html')),
+
+    # this needed just for send confirm email when user registering on site
+    url(r'^registration/account-confirm-email/(?P<key>[-:\w]+)/$',
+        TemplateView.as_view(),
+        name='account_confirm_email'),
 ]
