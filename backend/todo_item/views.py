@@ -42,7 +42,7 @@ class TodoListViewSet(viewsets.ModelViewSet):
             return self.queryset.filter(Q(owner=user) | (
                 (Q(favorite__user=user) | Q(watch__user=user)) &
                 Q(mode__in=[TodoList.ALLOW_READ, TodoList.ALLOW_FULL_ACCESS])
-            ))
+            )).distinct()
 
         return self.queryset.all()
 
