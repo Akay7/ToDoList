@@ -4,14 +4,14 @@
   <button (click)="logout()">Log out</button>
 </div>
 <div *ngIf="!user">
-  <form (ngSubmit)="login()" #loginForm="ngForm">
+  <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
     <ul *ngFor="let error of errors?.non_field_errors">
       <li>{{ error }}</li>
     </ul>
     <input name="username" type="text" placeholder="Username" required
-           [(ngModel)]="auth.username" #username="ngModel">
+           [(ngModel)]="username">
     <input name="password" type="password" placeholder="Password" required
-           [(ngModel)]="auth.password" #password="ngModel">
+           [(ngModel)]="password">
     <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
   </form>
   if you forget password, you can reset it <a [routerLink]="['/password-reset']">here</a><br>

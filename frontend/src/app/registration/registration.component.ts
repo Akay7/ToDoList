@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { User } from '../user';
-import {isSuccess} from "@angular/http/src/http_utils";
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +19,6 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private authService: AuthService) {
     this.authService.user.subscribe(user => this.user = user);
-    // this.authService.errors.subscribe(errors => this.errors = errors);
   }
 
   ngOnInit() {
@@ -33,10 +31,5 @@ export class RegistrationComponent implements OnInit {
       }, error => {
         this.errors = error.json();
       });
-      // .then(response => {
-      //     this.isSuccess = true;
-      //   }, error => {
-      //     this.errors = error.json();
-      //   });
   }
 }

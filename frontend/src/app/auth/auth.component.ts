@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { User } from '../user';
 
@@ -8,22 +10,30 @@ import { User } from '../user';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  auth = {username: '', password: ''};
   errors: {string: any};
   user: User;
 
-  constructor(private authService: AuthService) { }
+  constructor(private router: Router,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.user.subscribe(user => this.user = user);
-    this.authService.errors.subscribe(errors => this.errors = errors);
   }
 
-  login() {
-    this.authService.login(this.auth.username, this.auth.password);
-    this.auth = {username: '', password: ''};
+  login(form: NgForm) {
+    this.authService.login(form.value)
+      .subscribe(
+        res => {
+          this.user = res.json();
+        }, error => {
+          this.errors = error.json();
+        });
+    form.resetForm();
   }
   logout() {
-    this.authService.logout();
+    this.authService.logout()
+      .subscribe(res => {
+        this.router.navigate(['/']);
+      });
   }
 }
