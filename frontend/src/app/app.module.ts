@@ -22,6 +22,7 @@ import { FavoritePipe } from './favorite.pipe';
 import { OwnerPipe } from './owner.pipe';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordResetConfirmComponent } from './password-reset-confirm/password-reset-confirm.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 
 export function xsrfFactory() {
@@ -40,7 +41,8 @@ export function xsrfFactory() {
     WatchPipe,
     FavoritePipe,
     OwnerPipe,
-    PasswordResetConfirmComponent
+    PasswordResetConfirmComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

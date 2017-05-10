@@ -14,4 +14,6 @@
            [(ngModel)]="auth.password" #password="ngModel">
     <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
   </form>
+  if you forget password, you can reset it <a [routerLink]="['/password-reset']">here</a><br>
+  or if you still don't have an account, you can <a [routerLink]="['/registration']">register it</a>.
 </div>

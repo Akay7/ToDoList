@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 
 import {User} from './user';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class AuthService {
@@ -64,5 +65,24 @@ export class AuthService {
       new_password2: new_password2
     };
     return this.http.post(url, payload).toPromise();
+  }
+
+  registerUser(username, email, password1, password2) {
+    const url = `${this.authUrl}registration/`;
+    const payload = {
+      username: username,
+      password1: password1,
+      password2: password2
+    };
+    if (email) {
+      payload['email'] = email;
+    }
+
+    return new Observable(observer => {
+      this.http.post(url, payload)
+        .subscribe(response => {
+          this._user.next(response.json());
+        });
+    });
   }
 }

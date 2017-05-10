@@ -1,0 +1,43 @@
+<h2>Registration form</h2>
+<div *ngIf="!isSuccess && user">
+  <p>You already have account.</p>
+</div>
+<div *ngIf="isSuccess">
+  <p>You successfully registered. Now you can use all functionality of site.</p>
+  <p *ngIf="email.length">Soon you will get emai for validate your email address.</p>
+</div>
+<form *ngIf="!isSuccess && !user" (ngSubmit)="registerUser()" #registrationForm="ngForm">
+  <div>
+    <ul *ngFor="let error of errors?.username">
+      <li>{{ error }}</li>
+    </ul>
+    <label for="username">Your username(will used for login)*</label>
+    <input id="username" type="text" [(ngModel)]="username" name="username" required>
+  </div>
+  <div>
+    <ul *ngFor="let error of errors?.email">
+      <li>{{ error }}</li>
+    </ul>
+    <label for="email">Your email address</label>
+    <input id="email" type="email" [(ngModel)]="email" name="email">
+  </div>
+
+  <div>
+    <ul *ngFor="let error of errors?.password1">
+      <li>{{ error }}</li>
+    </ul>
+    <label for="password1">Please input password*</label>
+    <input id="password1" type="password" [(ngModel)]="password1" name="password1" required>
+  </div>
+  <div>
+    <ul *ngFor="let error of errors?.password2">
+      <li>{{ error }}</li>
+    </ul>
+    <label for="password2">Repeat password*</label>
+    <input id="password2" type="password" [(ngModel)]="password2" name="password2" required>
+  </div>
+  <ul *ngFor="let error of errors?.non_field_errors">
+    <li>{{ error }}</li>
+  </ul>
+  <button type="submit" [disabled]="!registrationForm.form.valid">Register account</button>
+</form>
