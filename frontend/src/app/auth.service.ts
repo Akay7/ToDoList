@@ -85,4 +85,9 @@ export class AuthService {
         });
     });
   }
+
+  accountConfirmEmail(key: string) {
+    const url = `${this.authUrl}registration/verify-email/`;
+    return this.http.post(url, {key: key});
+  }
 }

@@ -7,6 +7,7 @@ import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordResetConfirmComponent } from './password-reset-confirm/password-reset-confirm.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { AccountConfirmEmailComponent } from './account-confirm-email/account-confirm-email.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'password-reset', component: PasswordResetComponent },
   { path: 'reset/:uid/:token', component: PasswordResetConfirmComponent },
   { path: 'registration', component: RegistrationComponent },
+  { path: 'registration/account-confirm-email/:key', component: AccountConfirmEmailComponent },
   { path: ':id', component: TodoListComponent }
 ];
 
