@@ -3,9 +3,9 @@ import { Http } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
-import {User} from './user';
-import {Observable} from 'rxjs/Observable';
+import { User } from './user';
 
 @Injectable()
 export class AuthService {
@@ -78,12 +78,10 @@ export class AuthService {
       payload['email'] = email;
     }
 
-    return new Observable(observer => {
-      this.http.post(url, payload)
-        .subscribe(response => {
-          this._user.next(response.json());
-        });
-    });
+    return this.http.post(url, payload)
+      .do(response => {
+        this._user.next(response.json());
+      });
   }
 
   accountConfirmEmail(key: string) {

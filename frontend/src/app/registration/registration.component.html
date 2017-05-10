@@ -4,7 +4,7 @@
 </div>
 <div *ngIf="isSuccess">
   <p>You successfully registered. Now you can use all functionality of site.</p>
-  <p *ngIf="email.length">Soon you will get emai for validate your email address.</p>
+  <p *ngIf="email">Soon you will get emai for validate your email address.</p>
 </div>
 <form *ngIf="!isSuccess && !user" (ngSubmit)="registerUser()" #registrationForm="ngForm">
   <div>
