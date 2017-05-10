@@ -5,7 +5,6 @@ import 'rxjs/add/operator/toPromise';
 import { ChannelService } from './channel.service';
 import { TodoItem } from './todo-item';
 import { Subject } from 'rxjs/Subject';
-import {promise} from "selenium-webdriver";
 
 @Injectable()
 export class TodoItemService {

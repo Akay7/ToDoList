@@ -9,6 +9,14 @@ export class TodoListService {
 
   constructor(private http: Http) { }
 
+  getAll(): Promise<TodoList[]> {
+    const url = `${this.todoListUrl}`;
+    return this.http.get(url)
+      .toPromise()
+      .then(response => response.json() as TodoList[])
+      .catch(this.handleError);
+  }
+
   get(todoListId: string): Promise<TodoList> {
     const url = `${this.todoListUrl}${todoListId}/`;
     return this.http.get(url)

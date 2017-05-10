@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
+
 
 # Application definition
 
@@ -37,10 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'rest_framework',
     'django_filters',
     'channels',
+    'rest_auth',
+    'rest_auth.registration',
+    'allauth',
+    'allauth.account',
 
     'todo_item',
 ]
@@ -102,6 +109,8 @@ REST_FRAMEWORK = {
     ),
 }
 
+REST_USE_TOKEN = False
+
 
 # Django channels
 # https://channels.readthedocs.io/en/stable/
@@ -155,3 +164,8 @@ STATICFILES_DIRS = [
     os.path.join(os.path.dirname(BASE_DIR), 'frontend', 'dist'),
 ]
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media', 'static')
+
+
+# Email settings
+# https://docs.djangoproject.com/en/1.11/topics/email/#email-backends
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

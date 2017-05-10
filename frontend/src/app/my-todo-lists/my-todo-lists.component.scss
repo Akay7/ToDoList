@@ -1,0 +1,23 @@
+.todoList {
+  padding: 6px;
+
+  border-top: 1px solid black;
+  &:last-of-type{
+    border-bottom: 1px solid black;
+  }
+
+  .badge {
+    float:right;
+    border-radius: 2px;
+    margin: 2px;
+    &.own {
+      background-color: green;
+    }
+    &.favorite {
+      background-color: red;
+    }
+    &.watch {
+      background-color: dodgerblue;
+    }
+  }
+}

@@ -6,12 +6,12 @@
   "apps": [
     {
       "root": "src",
-      "deployUrl": "static",
       "outDir": "dist",
       "assets": [
         "assets",
         "favicon.ico"
       ],
+      "deployUrl": "static",
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -22,7 +22,8 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
@@ -52,7 +53,8 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
-    "component": {}
+    "styleExt": "scss",
+    "component": {
+    }
   }
 }

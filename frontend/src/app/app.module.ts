@@ -6,12 +6,24 @@ import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainPageComponent } from './main-page/main-page.component';
+import { AuthComponent } from './auth/auth.component';
+import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ChannelService } from './channel.service';
 import { WebSocketService } from './web-socket.service';
+import { AuthService } from './auth.service';
 import { TodoListService } from './todo-list.service';
 import { TodoItemService } from './todo-item.service';
+import { WatchService } from './watch.service';
+import { FavoriteService } from './favorite.service';
+import { WatchPipe } from './watch.pipe';
 import { OrderByIdPipe } from './order-by-id.pipe';
+import { FavoritePipe } from './favorite.pipe';
+import { OwnerPipe } from './owner.pipe';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { PasswordResetConfirmComponent } from './password-reset-confirm/password-reset-confirm.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { AccountConfirmEmailComponent } from './account-confirm-email/account-confirm-email.component';
 
 
 export function xsrfFactory() {
@@ -22,8 +34,17 @@ export function xsrfFactory() {
   declarations: [
     AppComponent,
     MainPageComponent,
+    MyTodoListsComponent,
+    AuthComponent,
     TodoListComponent,
-    OrderByIdPipe
+    PasswordResetComponent,
+    OrderByIdPipe,
+    WatchPipe,
+    FavoritePipe,
+    OwnerPipe,
+    PasswordResetConfirmComponent,
+    RegistrationComponent,
+    AccountConfirmEmailComponent
   ],
   imports: [
     BrowserModule,
@@ -33,8 +54,11 @@ export function xsrfFactory() {
   ],
   providers: [
     {provide: XSRFStrategy, useFactory: xsrfFactory},
+    AuthService,
     TodoListService,
     TodoItemService,
+    WatchService,
+    FavoriteService,
     ChannelService,
     WebSocketService
   ],
