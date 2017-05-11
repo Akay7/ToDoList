@@ -45,15 +45,9 @@ export class AuthService {
     return this.http.post(url, payload);
   }
 
-  passwordResetConfirm(uid, token, new_password1, new_password2) {
+  passwordResetConfirm(payload: {string: string}) {
     const url = `${this.authUrl}password/reset/confirm/`;
-    const payload = {
-      uid: uid,
-      token: token,
-      new_password1: new_password1,
-      new_password2: new_password2
-    };
-    return this.http.post(url, payload).toPromise();
+    return this.http.post(url, payload);
   }
 
   registerUser(username, email, password1, password2) {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-password-reset-confirm',
@@ -8,10 +9,7 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./password-reset-confirm.component.scss']
 })
 export class PasswordResetConfirmComponent implements OnInit {
-  uid;
-  token;
-  new_password1;
-  new_password2;
+  tokens;
   errors: {string: any};
   isWrongToken = false;
   isSuccess = false;
@@ -22,15 +20,14 @@ export class PasswordResetConfirmComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.uid = params['uid'];
-      this.token = params['token'];
+      this.tokens = Object.assign({}, params);
     });
   }
 
-  passwordResetConfirm() {
-    this.authService.passwordResetConfirm(
-      this.uid, this.token, this.new_password1, this.new_password2)
-      .then(success => {
+  passwordResetConfirm(form: NgForm) {
+    const payload = Object.assign({}, this.tokens, form.value);
+    this.authService.passwordResetConfirm(payload)
+      .subscribe(success => {
         this.isSuccess = true;
       }, error => {
         this.errors = error.json();
