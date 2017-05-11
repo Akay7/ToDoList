@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -41,9 +40,9 @@ export class AuthService {
       });
   }
 
-  passwordReset(email: string) {
+  passwordReset(payload: {string: string}) {
     const url = `${this.authUrl}password/reset/`;
-    return this.http.post(url, {email: email}).toPromise();
+    return this.http.post(url, payload);
   }
 
   passwordResetConfirm(uid, token, new_password1, new_password2) {
