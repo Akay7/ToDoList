@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { User } from '../user';
 
@@ -12,11 +13,6 @@ export class RegistrationComponent implements OnInit {
   isSuccess = false;
   user: User;
 
-  username;
-  email;
-  password1;
-  password2;
-
   constructor(private authService: AuthService) {
     this.authService.user.subscribe(user => this.user = user);
   }
@@ -24,8 +20,8 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
   }
 
-  registerUser() {
-    this.authService.registerUser(this.username, this.email, this.password1, this.password2)
+  registerUser(form: NgForm) {
+    this.authService.registerUser(form.value)
       .subscribe(data => {
         this.isSuccess = true;
       }, error => {

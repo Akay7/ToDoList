@@ -50,17 +50,8 @@ export class AuthService {
     return this.http.post(url, payload);
   }
 
-  registerUser(username, email, password1, password2) {
+  registerUser(payload: {string: string}) {
     const url = `${this.authUrl}registration/`;
-    const payload = {
-      username: username,
-      password1: password1,
-      password2: password2
-    };
-    if (email) {
-      payload['email'] = email;
-    }
-
     return this.http.post(url, payload)
       .do(response => {
         this._user.next(response.json());
