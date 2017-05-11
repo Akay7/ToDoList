@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -15,16 +16,12 @@ export class PasswordResetComponent implements OnInit {
   ngOnInit() {
   }
 
-  passwordReset(email: string) {
-    email = email.trim();
-    if (!email) { return; }
-
-    this.authService.passwordReset(email)
-      .then(success => {
+  passwordReset(form: NgForm) {
+    this.authService.passwordReset(form.value)
+      .subscribe(success => {
           this.isSuccess = true;
         }, error => {
           this.errors = error.json();
-          console.log(this.errors);
       });
   }
 

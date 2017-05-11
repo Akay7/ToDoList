@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -41,33 +40,18 @@ export class AuthService {
       });
   }
 
-  passwordReset(email: string) {
+  passwordReset(payload: {string: string}) {
     const url = `${this.authUrl}password/reset/`;
-    return this.http.post(url, {email: email}).toPromise();
+    return this.http.post(url, payload);
   }
 
-  passwordResetConfirm(uid, token, new_password1, new_password2) {
+  passwordResetConfirm(payload: {string: string}) {
     const url = `${this.authUrl}password/reset/confirm/`;
-    const payload = {
-      uid: uid,
-      token: token,
-      new_password1: new_password1,
-      new_password2: new_password2
-    };
-    return this.http.post(url, payload).toPromise();
+    return this.http.post(url, payload);
   }
 
-  registerUser(username, email, password1, password2) {
+  registerUser(payload: {string: string}) {
     const url = `${this.authUrl}registration/`;
-    const payload = {
-      username: username,
-      password1: password1,
-      password2: password2
-    };
-    if (email) {
-      payload['email'] = email;
-    }
-
     return this.http.post(url, payload)
       .do(response => {
         this._user.next(response.json());
