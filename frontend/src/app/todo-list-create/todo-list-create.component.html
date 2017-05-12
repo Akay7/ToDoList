@@ -1,0 +1,34 @@
+<h2>Create New Todo List</h2>
+<form *ngIf="user" (ngSubmit)="createTodoList(todoListCreateForm)" #todoListCreateForm="ngForm">
+  <div>
+    <ul *ngFor="let error of errors?.title">
+      <li>{{ error }}</li>
+    </ul>
+    <label for="title">Title</label>
+    <input type="text" name="title" [(ngModel)]="title" required>
+  </div>
+  <div>
+    <ul *ngFor="let error of errors?.owner">
+      <li>{{ error }}</li>
+    </ul>
+    <label for="owner">Owner</label>
+    <select type="text" name="owner" [(ngModel)]="owner" #ownerField
+            (change)="mode='full_access'">
+      <option [ngValue]=null>No one</option>
+      <option [ngValue]="user.pk">Me</option>
+    </select>
+  </div>
+  <div>
+    <ul *ngFor="let error of errors?.mode">
+      <li>{{ error }}</li>
+    </ul>
+    <label for="mode">Mode</label>
+    <select name="mode" [(ngModel)]="mode" #modeField
+            [disabled]="owner != user.pk">
+      <option value='private'>Just for me</option>
+      <option value='read'>Allow read to everyone</option>
+      <option value='full_access'>Full access to everyone</option>
+    </select>
+  </div>
+  <button type="submit" [disabled]="!todoListCreateForm.form.valid">Create Todo List</button>
+</form>

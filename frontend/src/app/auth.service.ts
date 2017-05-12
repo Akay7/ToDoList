@@ -14,9 +14,8 @@ export class AuthService {
   constructor(private http: Http) {
     const url = `${this.authUrl}user/`;
     this.http.get(url)
-      .map(res => res.json())
       .subscribe(data => {
-        this._user.next(data);
+        this._user.next(data.json());
       });
   }
 

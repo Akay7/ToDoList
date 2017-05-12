@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainPageComponent } from './main-page/main-page.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { MyTodoListsComponent } from './my-todo-lists/my-todo-lists.component';
+import { TodoListCreateComponent} from './todo-list-create/todo-list-create.component';
+import { TodoListSettingsComponent} from './todo-list-settings/todo-list-settings.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordResetConfirmComponent } from './password-reset-confirm/password-reset-confirm.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'reset/:uid/:token', component: PasswordResetConfirmComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'registration/account-confirm-email/:key', component: AccountConfirmEmailComponent },
+  { path: 'todo-list-create', component: TodoListCreateComponent },
+  { path: ':id/settings', component: TodoListSettingsComponent },
   { path: ':id', component: TodoListComponent }
 ];
 

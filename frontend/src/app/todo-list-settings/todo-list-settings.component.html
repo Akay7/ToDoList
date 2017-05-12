@@ -1,0 +1,38 @@
+<div *ngIf="todoList">
+  <h2>{{ todoList.title }}</h2>
+  <button (click)="deleteTodoList()">Delete ToDo list</button>
+  <form (ngSubmit)="updateTodoList(todoListSettingsForm)" #todoListSettingsForm="ngForm">
+    <div>
+      <ul *ngFor="let error of errors?.title">
+        <li>{{ error }}</li>
+      </ul>
+      <label for="title">Title</label>
+      <input type="text" name="title" [(ngModel)]="todoList.title" required>
+    </div>
+    <div>
+      <ul *ngFor="let error of errors?.owner">
+        <li>{{ error }}</li>
+      </ul>
+      <label for="owner">Owner</label>
+      <select type="text" name="owner" [(ngModel)]="todoList.owner" #ownerField
+              (change)="todoList.mode='full_access'">
+        <option [ngValue]=null>No one</option>
+        <option [ngValue]="user.pk">Me</option>
+        <option *ngIf="ownerId && ownerId !== user.pk" [ngValue]="ownerId">Other user</option>
+      </select>
+    </div>
+    <div>
+      <ul *ngFor="let error of errors?.mode">
+        <li>{{ error }}</li>
+      </ul>
+      <label for="mode">Mode</label>
+      <select name="mode" [(ngModel)]="todoList.mode" #modeField
+              [disabled]="todoList.owner != user.pk">
+        <option value='private'>Just for me</option>
+        <option value='read'>Allow read to everyone</option>
+        <option value='full_access'>Full access to everyone</option>
+      </select>
+    </div>
+    <button type="submit" [disabled]="!todoListSettingsForm.form.valid">Update</button>
+  </form>
+</div>

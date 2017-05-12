@@ -18,7 +18,6 @@ export class TodoListComponent implements OnInit {
   @Input() todoList: TodoList;
   todoItems: TodoItem[];
   selectedTodoItem: TodoItem;
-  isEditTitle = false;
 
   constructor (
     private router: Router,
@@ -41,21 +40,6 @@ export class TodoListComponent implements OnInit {
       });
   }
 
-  editTodoListTitle(): void {
-    this.isEditTitle = true;
-  }
-  saveTodoListTitle(): void {
-    this.todoListService.update(this.todoList).then(
-      success => { this.isEditTitle = false; },
-      error => { console.log(`can't update title`); }
-    );
-  }
-  deleteTodoList(): void {
-    this.todoListService.delete(this.todoList).then(
-      success => { this.router.navigate(['/']); },
-      error => { console.log(`can't delete todo list`); }
-    );
-  }
   watch(todoListId) {
     this.watchService.startWatch(todoListId);
   }
