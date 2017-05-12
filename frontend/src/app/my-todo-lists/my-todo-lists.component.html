@@ -3,13 +3,15 @@
 </h2>
 
 <div>
-  <div class="todoList" *ngFor="let todoList of todoLists" (click)="select(todoList)">
+  <div class="todoList" *ngFor="let todoList of todoLists">
     {{ todoList.title ? todoList.title : 'Empty Todo list title' }}
 
-    <span class="badge own" *ngIf="todoList | owner">own</span>
-    <span class="badge favorite" *ngIf="todoList | favorite">favorite</span>
-    <span class="badge watch" *ngIf="todoList | watch">watch</span>
-    <button *ngIf="selectedTodoList===todoList"
-            [routerLink]="['/', todoList.id]">edit</button>
+    <div class="right">
+      <span class="badge own" *ngIf="todoList | owner">own</span>
+      <span class="badge favorite" *ngIf="todoList | favorite">favorite</span>
+      <span class="badge watch" *ngIf="todoList | watch">watch</span>
+      <button [routerLink]="['/', todoList.id]">View</button>
+      <button [routerLink]="['/', todoList.id, 'settings']">Settings</button>
+    </div>
   </div>
 </div>

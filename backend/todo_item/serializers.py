@@ -25,7 +25,7 @@ class TodoListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TodoList
-        fields = ('id', 'title', 'owner',)
+        fields = ('id', 'title', 'owner', 'mode',)
 
 
 class TodoListChoices(serializers.PrimaryKeyRelatedField):

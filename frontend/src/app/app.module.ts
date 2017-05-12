@@ -24,6 +24,7 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { PasswordResetConfirmComponent } from './password-reset-confirm/password-reset-confirm.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { AccountConfirmEmailComponent } from './account-confirm-email/account-confirm-email.component';
+import { TodoListSettingsComponent } from './todo-list-settings/todo-list-settings.component';
 
 
 export function xsrfFactory() {
@@ -35,6 +36,7 @@ export function xsrfFactory() {
     AppComponent,
     MainPageComponent,
     MyTodoListsComponent,
+    TodoListSettingsComponent,
     AuthComponent,
     TodoListComponent,
     PasswordResetComponent,

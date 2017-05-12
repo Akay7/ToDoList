@@ -9,7 +9,6 @@ import { TodoList } from '../todo-list';
 })
 export class MyTodoListsComponent implements OnInit {
   todoLists: TodoList[];
-  selectedTodoList: TodoList;
 
   constructor(private todoListService: TodoListService) { }
 
@@ -18,9 +17,4 @@ export class MyTodoListsComponent implements OnInit {
       todoLists => this.todoLists = todoLists
     );
   }
-
-  select(todoList) {
-    this.selectedTodoList = this.selectedTodoList !== todoList ? todoList : null;
-  }
-
 }
