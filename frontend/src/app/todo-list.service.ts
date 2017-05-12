@@ -25,6 +25,14 @@ export class TodoListService {
       .catch(this.handleError);
   }
 
+  create(payload) {
+    return this.http
+      .post(this.todoListUrl, payload)
+      .toPromise()
+      .then(res => res.json() as TodoList)
+      .catch(this.handleError);
+  }
+
   update(todoList: TodoList): Promise<TodoList> {
     const url = `${this.todoListUrl}${todoList.id}/`;
     return this.http

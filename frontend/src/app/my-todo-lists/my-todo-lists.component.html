@@ -3,6 +3,7 @@
 </h2>
 
 <div>
+  <button [routerLink]="['/todo-list-create']">Create New Todo List</button>
   <div class="todoList" *ngFor="let todoList of todoLists">
     {{ todoList.title ? todoList.title : 'Empty Todo list title' }}
 
