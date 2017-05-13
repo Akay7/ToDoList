@@ -19,7 +19,12 @@ export class TodoListCreateComponent implements OnInit {
   constructor(private router: Router,
               private authService: AuthService,
               private todoListService: TodoListService) {
-    this.authService.user.subscribe(user => this.user = user);
+    this.authService.user.subscribe(user => {
+      this.user = user;
+      if (this.user) {
+        this.owner = this.user.pk;
+      }
+    });
   }
 
   ngOnInit() {
