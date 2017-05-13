@@ -321,6 +321,14 @@ class TodoListPermissionTest(TestCase):
         )
         self.assertEqual(response.status_code, 400)
 
+    def test_can_watch_read_only_todo_list(self):
+        self.todo_list.mode = TodoList.ALLOW_READ
+        self.todo_list.save()
+
+        self.client.force_login(self.other_person)
+        response = self.client.post('/api/web/watch/', {'todo_list': self.todo_list.id})
+        self.assertEqual(response.status_code, 201)
+
 
 class WebSocketTests(ChannelTestCase):
     def setUp(self):
