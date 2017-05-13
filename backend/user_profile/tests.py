@@ -43,3 +43,18 @@ class UserAuthTest(TestCase):
 
         self.assertEqual(response.json()['username'], self.USERNAME)
         self.assertEqual(response.json()['email'], self.EMAIL)
+
+    def test_registration_api_return_user_information_with_empty_email(self):
+        users_qty = UserModel.objects.count()
+
+        payload = {
+            'username': self.USERNAME,
+            'email': " ",
+            'password1': self.PASSWORD,
+            'password2': self.PASSWORD,
+        }
+        response = self.client.post('/api/web/registration/', payload)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(UserModel.objects.count(), users_qty + 1)
+
+        self.assertEqual(response.json()['username'], self.USERNAME)
