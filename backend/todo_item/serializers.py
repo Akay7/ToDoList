@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
@@ -34,12 +35,20 @@ class TodoListChoices(serializers.PrimaryKeyRelatedField):
         query = Q()
         if user.is_authenticated():
             query |= Q(owner=user)
-        query |= Q(mode=TodoList.ALLOW_FULL_ACCESS)
+        query |= Q(mode=TodoList.ALLOW_FULL_ACCESS) | Q(mode=TodoList.ALLOW_READ)
         return TodoList.objects.filter(query)
 
 
 class TodoItemSerializer(serializers.ModelSerializer):
     todo_list = TodoListChoices(required=False)
+
+    def validate_todo_list(self, todo_list):
+        if (todo_list.owner != self.context['request'].user and
+                    todo_list.mode == TodoList.ALLOW_READ):
+            raise serializers.ValidationError(
+                _("You can't add new item to readonly todo lists")
+            )
+        return todo_list
 
     def create(self, validated_data):
         if 'todo_list' not in validated_data:
