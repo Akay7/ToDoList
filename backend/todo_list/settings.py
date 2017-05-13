@@ -110,7 +110,9 @@ REST_FRAMEWORK = {
 }
 
 REST_USE_TOKEN = False
-
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'user_profile.serializers.RegistrationAllowEmptyEmailSerializer',
+}
 
 # Django channels
 # https://channels.readthedocs.io/en/stable/
