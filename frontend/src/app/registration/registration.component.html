@@ -1,43 +1,54 @@
-<h2>Registration form</h2>
-<div *ngIf="!isSuccess && user">
-  <p>You already have account.</p>
-</div>
-<div *ngIf="isSuccess">
-  <p>You successfully registered. Now you can use all functionality of site.</p>
-  <p *ngIf="email">Soon you will get emai for validate your email address.</p>
-</div>
-<form *ngIf="!isSuccess && !user" (ngSubmit)="registerUser(registrationForm)" #registrationForm="ngForm">
-  <div>
-    <ul *ngFor="let error of errors?.username">
-      <li>{{ error }}</li>
-    </ul>
-    <label for="username">Your username(will used for login)*</label>
-    <input id="username" type="text" [(ngModel)]="username" name="username" required>
+<div class="container">
+  <h1>Registration Form</h1>
+  <div *ngIf="!isSuccess && user">
+    <p>You already have account.</p>
   </div>
-  <div>
-    <ul *ngFor="let error of errors?.email">
-      <li>{{ error }}</li>
-    </ul>
-    <label for="email">Your email address</label>
-    <input id="email" type="email" [(ngModel)]="email" name="email">
+  <div *ngIf="isSuccess">
+    <p>You successfully registered. Now you can use all functionality of site.</p>
+    <p *ngIf="email">Soon you will get emai for validate your email address.</p>
   </div>
+  <form *ngIf="!isSuccess && !user" (ngSubmit)="registerUser(registrationForm)" #registrationForm="ngForm">
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.username}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.username">
+        {{ error }}
+      </div>
+      <label for="username" class="col-form-label col-sm-3">Your Username*</label>
+      <input id="username" type="text" class="form-control col-sm-9"
+             [(ngModel)]="username" name="username" required>
+    </div>
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.email}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.email">
+        {{ error }}
+      </div>
+      <label for="email" class="col-form-label col-sm-3">Your Email Address</label>
+      <input id="email" type="email" class="form-control col-sm-9"
+             [(ngModel)]="email" name="email">
+    </div>
 
-  <div>
-    <ul *ngFor="let error of errors?.password1">
-      <li>{{ error }}</li>
-    </ul>
-    <label for="password1">Please input password*</label>
-    <input id="password1" type="password" [(ngModel)]="password1" name="password1" required>
-  </div>
-  <div>
-    <ul *ngFor="let error of errors?.password2">
-      <li>{{ error }}</li>
-    </ul>
-    <label for="password2">Repeat password*</label>
-    <input id="password2" type="password" [(ngModel)]="password2" name="password2" required>
-  </div>
-  <ul *ngFor="let error of errors?.non_field_errors">
-    <li>{{ error }}</li>
-  </ul>
-  <button type="submit" [disabled]="!registrationForm.form.valid">Register account</button>
-</form>
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.password1}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.password1">
+        {{ error }}
+      </div>
+      <label for="password1" class="col-form-label col-sm-3">Password*</label>
+      <input id="password1" type="password" class="form-control col-sm-9"
+             [(ngModel)]="password1" name="password1" required>
+    </div>
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.password2}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.password2">
+        {{ error }}
+      </div>
+      <label for="password2" class="col-form-label col-sm-3">Password Confirmation*</label>
+      <input id="password2" type="password" class="form-control col-sm-9"
+             [(ngModel)]="password2" name="password2" required>
+    </div>
+    <div *ngFor="let error of errors?.non_field_errors">
+      {{ error }}
+    </div>
+    <button type="submit" class="btn btn-primary"
+            [disabled]="!registrationForm.form.valid">Register Account</button>
+  </form>
+</div>
