@@ -1,19 +1,49 @@
-<div *ngIf="user">
-  Hi, {{ user.username }}! You can look your
-  <button [routerLink]="['/my-todo-lists']">todo lists</button> or
-  <button (click)="logout()">Log out</button>
-</div>
-<div *ngIf="!user">
-  <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
-    <ul *ngFor="let error of errors?.non_field_errors">
-      <li>{{ error }}</li>
+<nav class="navbar navbar-light bg-faded navbar-toggleable-md">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+          data-target="#containerNavbar" aria-controls="containerNavbar" aria-label="Toggle navigation"
+          (click)="isShow= !isShow">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" *ngIf="!user" [routerLink]="['/']">ToDo list</a>
+  <a class="navbar-brand"
+     *ngIf="user" [routerLink]="['/my-todo-lists']">{{ user.username }} ToDo lists</a>
+  <div class="collapse navbar-collapse" id="containerNavbar"
+       [ngClass]="{'show': isShow }">
+
+    <ul class="navbar-nav mr-auto"  *ngIf="!user">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/registration']">Registration<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  [routerLink]="['/password-reset']">Reset password</a>
+      </li>
     </ul>
-    <input name="username" type="text" placeholder="Username" required
-           [(ngModel)]="username">
-    <input name="password" type="password" placeholder="Password" required
-           [(ngModel)]="password">
-    <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
-  </form>
-  if you forget password, you can reset it <a [routerLink]="['/password-reset']">here</a><br>
-  or if you still don't have an account, you can <a [routerLink]="['/registration']">register it</a>.
-</div>
+    <form  class="form-inline" [ngClass]="{'has-danger': errors?.non_field_errors}"
+            *ngIf="!user" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+      <div class="form-control-feedback col-sm-10"
+            *ngFor="let error of errors?.non_field_errors">
+        {{ error }}
+      </div>
+      <div class="input-group">
+        <input class="form-control"
+               name="username" type="text" placeholder="Username" required
+               [(ngModel)]="username" >
+        <input class="form-control"
+               name="password" type="password" placeholder="Password" required
+               [(ngModel)]="password">
+        <span class="input-group-btn">
+          <button class="btn btn-secondary"
+                  type="submit" [disabled]="!loginForm.form.valid">Login</button>
+        </span>
+      </div>
+    </form>
+
+    <ul class="navbar-nav mr-auto" *ngIf="user">
+    </ul>
+    <ul class="navbar-nav" *ngIf="user">
+      <li class="nav-item">
+        <a class="nav-link" (click)="logout()">Log out</a>
+      </li>
+    </ul>
+  </div>
+</nav>

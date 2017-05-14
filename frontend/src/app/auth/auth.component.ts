@@ -12,9 +12,14 @@ import { User } from '../user';
 export class AuthComponent implements OnInit {
   errors: {string: any};
   user: User;
+  isShow = false;
 
   constructor(private router: Router,
-              private authService: AuthService) { }
+              private authService: AuthService) {
+    router.events.subscribe((val) => {
+      this.isShow = false;
+    });
+  }
 
   ngOnInit() {
     this.authService.user.subscribe(user => this.user = user);
