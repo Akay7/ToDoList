@@ -21,7 +21,7 @@
       </ul>
       <form  class="form-inline" [ngClass]="{'has-danger': errors?.non_field_errors}"
               *ngIf="!user" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
-        <div class="form-control-feedback col-sm-10"
+        <div class="form-control-feedback"
               *ngFor="let error of errors?.non_field_errors">
           {{ error }}
         </div>
@@ -32,7 +32,7 @@
           <input class="form-control"
                  name="password" type="password" placeholder="Password" required
                  [(ngModel)]="password">
-          <span class="input-group-btn">
+          <span class="input-group-btn ">
             <button class="btn btn-secondary"
                     type="submit" [disabled]="!loginForm.form.valid">Login</button>
           </span>
