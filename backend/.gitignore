@@ -1,0 +1,4 @@
+*.pyc
+.venv/
+todo_list/settings/prod.py
+
