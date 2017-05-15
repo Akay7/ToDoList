@@ -7,7 +7,11 @@
         <th>#</th>
         <th>Title</th>
         <th></th>
-        <th><button class="btn btn-secondary btn-sm" [routerLink]="['/todo-list-create']">Create New</button></th>
+        <th>
+          <button class="btn btn-secondary btn-sm" [routerLink]="['/todo-list-create']">
+            <i class="fa fa-plus-square" aria-hidden="true"></i>Create New
+          </button>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -19,7 +23,11 @@
           <span class="badge badge-danger" *ngIf="todoList | favorite"><i class="fa fa-heart" aria-hidden="true"></i>Favorite</span>
           <span class="badge badge-info" *ngIf="todoList | watch"><i class="fa fa-eye" aria-hidden="true"></i>Watch</span>
         </th>
-        <th><button class="btn btn-secondary btn-sm" [routerLink]="['/', todoList.id, 'settings']">Settings</button></th>
+        <th>
+          <button class="btn btn-secondary btn-sm" [routerLink]="['/', todoList.id, 'settings']">
+            <i class="fa fa-cog" aria-hidden="true"></i>Settings
+          </button>
+        </th>
       </tr>
     </tbody>
   </table>
