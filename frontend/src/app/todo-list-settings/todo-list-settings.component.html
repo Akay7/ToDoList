@@ -1,38 +1,44 @@
-<div *ngIf="todoList">
-  <h2>{{ todoList.title }}</h2>
-  <button (click)="deleteTodoList()">Delete ToDo list</button>
+<div class="container" *ngIf="todoList">
+  <h1>{{ todoList.title }}</h1>
   <form (ngSubmit)="updateTodoList(todoListSettingsForm)" #todoListSettingsForm="ngForm">
-    <div>
-      <ul *ngFor="let error of errors?.title">
-        <li>{{ error }}</li>
-      </ul>
-      <label for="title">Title</label>
-      <input type="text" name="title" [(ngModel)]="todoList.title" required>
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.title}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.title">
+        {{ error }}
+      </div>
+      <label for="title" class="col-form-label col-sm-3">Title</label>
+      <input type="text" class="form-control col-sm-9" name="title" [(ngModel)]="todoList.title" required>
     </div>
-    <div>
-      <ul *ngFor="let error of errors?.owner">
-        <li>{{ error }}</li>
-      </ul>
-      <label for="owner">Owner</label>
-      <select type="text" name="owner" [(ngModel)]="todoList.owner" #ownerField
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.owner}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.owner">
+        {{ error }}
+      </div>
+      <label for="owner" class="col-form-label col-sm-3">Owner</label>
+      <select class="form-control col-sm-9" name="owner" [(ngModel)]="todoList.owner" #ownerField
               (change)="todoList.mode='full_access'">
         <option [ngValue]=null>No one</option>
         <option [ngValue]="user.pk">Me</option>
         <option *ngIf="ownerId && ownerId !== user.pk" [ngValue]="ownerId">Other user</option>
       </select>
     </div>
-    <div>
-      <ul *ngFor="let error of errors?.mode">
-        <li>{{ error }}</li>
-      </ul>
-      <label for="mode">Mode</label>
-      <select name="mode" [(ngModel)]="todoList.mode" #modeField
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.mode}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.mode">
+        {{ error }}
+      </div>
+      <label for="mode" class="col-form-label col-sm-3">Mode</label>
+      <select class="form-control col-sm-9" name="mode" [(ngModel)]="todoList.mode" #modeField
               [disabled]="todoList.owner != user.pk">
         <option value='private'>Just for me</option>
         <option value='read'>Allow read to everyone</option>
         <option value='full_access'>Full access to everyone</option>
       </select>
     </div>
-    <button type="submit" [disabled]="!todoListSettingsForm.form.valid">Update</button>
+    <div class="form-group row">
+      <button type="button" class="btn btn-danger col-sm-3" (click)="deleteTodoList()">Delete</button>
+      <button type="submit" class="btn btn-primary col-sm-3 offset-sm-3" [disabled]="!todoListSettingsForm.form.valid">Update</button>
+      <button type="submit" class="btn btn-secondary col-sm-3" [routerLink]="['/', todoList.id]">see the ToDo list</button>
+    </div>
   </form>
 </div>

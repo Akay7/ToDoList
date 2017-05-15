@@ -15,13 +15,13 @@
         {{ error }}
       </div>
       <label for="owner" class="col-form-label col-sm-3">Owner</label>
-      <select type="text" class="form-control col-sm-9" name="owner" [(ngModel)]="owner" #ownerField
+      <select class="form-control col-sm-9" name="owner" [(ngModel)]="owner" #ownerField
               (change)="mode='full_access'">
         <option [ngValue]=null>No one</option>
         <option [ngValue]="user.pk">Me</option>
       </select>
     </div>
-    <div  class="form-group row" [ngClass]="{'has-danger': errors?.mode}">
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.mode}">
       <div class="form-control-feedback col-sm-9 offset-sm-3"
            *ngFor="let error of errors?.mode">
         {{ error }}
