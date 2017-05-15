@@ -1,18 +1,26 @@
-<h2>
-  Todo lists
-</h2>
+<div class="container">
+  <h1>Todo lists</h1>
 
-<div>
-  <button [routerLink]="['/todo-list-create']">Create New Todo List</button>
-  <div class="todoList" *ngFor="let todoList of todoLists">
-    {{ todoList.title ? todoList.title : 'Empty Todo list title' }}
-
-    <div class="right">
-      <span class="badge own" *ngIf="todoList | owner">own</span>
-      <span class="badge favorite" *ngIf="todoList | favorite">favorite</span>
-      <span class="badge watch" *ngIf="todoList | watch">watch</span>
-      <button [routerLink]="['/', todoList.id]">View</button>
-      <button [routerLink]="['/', todoList.id, 'settings']">Settings</button>
-    </div>
-  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th></th>
+        <th><button class="btn btn-secondary btn-sm" [routerLink]="['/todo-list-create']">Create New</button></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let todoList of todoLists; let i=index" [routerLink]="['/', todoList.id]">
+        <th>{{ i + 1 }}</th>
+        <th>{{ todoList.title }}</th>
+        <th>
+          <span class="badge badge-default" *ngIf="todoList | owner"><i class="fa fa-user-circle-o" aria-hidden="true"></i>Own</span>
+          <span class="badge badge-danger" *ngIf="todoList | favorite"><i class="fa fa-heart" aria-hidden="true"></i>Favorite</span>
+          <span class="badge badge-info" *ngIf="todoList | watch"><i class="fa fa-eye" aria-hidden="true"></i>Watch</span>
+        </th>
+        <th><button class="btn btn-secondary btn-sm" [routerLink]="['/', todoList.id, 'settings']">Settings</button></th>
+      </tr>
+    </tbody>
+  </table>
 </div>
