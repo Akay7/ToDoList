@@ -1,9 +1,36 @@
-<h1>
-  {{title}}
-</h1>
+<div class="container">
 
-<div>
-  <input id="new-item-title" type="text" [(ngModel)]="newItemTitle">
-  <button id="new-item-create" [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
+  <h1>Create your ToDo list!!!</h1>
+
+  <form (ngSubmit)="add(title)" #mainPageCreateForm="ngForm">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>
+            <div class="form-group" [ngClass]="{'has-danger': errors?.title}">
+              <div class="form-control-feedback"
+                 *ngFor="let error of errors?.title">
+                {{ error }}
+              </div>
+
+              <input type="text" class="form-control" required
+                     [(ngModel)]="title" name="title">
+            </div>
+          </td>
+          <td class="align-middle">
+            <button type="submit" class="btn btn-info" [disabled]="!mainPageCreateForm.form.valid">Create</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
 </div>
-

@@ -53,12 +53,9 @@ export class TodoItemService {
     return this._todoItems[listId].asObservable();
   }
 
-  createTodoItemWithNewList(title: string): Promise<TodoItem> {
+  createTodoItemWithNewList(title: string) {
     return this.http
-      .post(this.todoItemsUrl, {title: title})
-      .toPromise()
-      .then(res => res.json() as TodoItem,  error => console.log('Error create todo'));
-
+      .post(this.todoItemsUrl, {title: title});
   }
 
   createTodoItem(title: string, listId: string) {
