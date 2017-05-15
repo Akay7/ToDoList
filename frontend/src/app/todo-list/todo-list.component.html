@@ -1,33 +1,71 @@
-<div *ngIf="todoList">
-  <div>
-    <h2>{{ todoList.title }}</h2>
-    <h2 *ngIf="!todoList.title">ToDo list without title</h2>
-  </div>
-  <button *ngIf="todoList | watch" (click)="unwatch(todoList.id)">Unwatch</button>
-  <button *ngIf="!(todoList | watch)" (click)="watch(todoList.id)">Watch</button>
+<div class="container" *ngIf="todoList">
+  <h1>{{ todoList.title || 'Todo list without title'  }}</h1>
 
-  <button *ngIf="todoList | favorite" (click)="removeFromFavorite(todoList.id)">Remove from Favorite</button>
-  <button *ngIf="!(todoList | favorite)" (click)="addToFavorite(todoList.id)">Add to Favorite</button>
-</div>
+  <button class="btn btn-info btn-sm"
+          *ngIf="todoList | watch" (click)="unwatch(todoList.id)">
+          <i class="fa fa-eye-slash" aria-hidden="true"></i>Unwatch</button>
+  <button class="btn btn-info btn-sm"
+          *ngIf="!(todoList | watch)" (click)="watch(todoList.id)">
+          <i class="fa fa-eye" aria-hidden="true"></i>Watch</button>
 
-<ul>
-  <li *ngFor="let todoItem of todoItems | orderById">
-    <input type="checkbox" [(ngModel)]="todoItem.status" (change)="save(todoItem)">
+  <button class="btn btn-danger btn-sm"
+          *ngIf="todoList | favorite" (click)="removeFromFavorite(todoList.id)">
+          <i class="fa fa-heart-o" aria-hidden="true"></i>Remove from Favorite</button>
+  <button class="btn btn-danger btn-sm"
+          *ngIf="!(todoList | favorite)" (click)="addToFavorite(todoList.id)">
+          <i class="fa fa-heart" aria-hidden="true"></i>Add to Favorite</button>
 
-    <span *ngIf="todoItem === selectedTodoItem">
-      <input type="text" [(ngModel)]="todoItem.title">
-      <button (click)="save(todoItem)">save</button>
-      <button (click)="delete(todoItem)">x</button>
-    </span>
 
-    <span *ngIf="todoItem !== selectedTodoItem">
-      {{ todoItem.title }}
-      <button (click)="editTodoItem(todoItem)">edit</button>
-    </span>
-  </li>
-</ul>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>#</th>
+        <th class="w-75">Title</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let todoItem of todoItems | orderById; let i = index"
+          (click)="editTodoItem(todoItem)">
+        <th>
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input big-checkbox"
+                   [(ngModel)]="todoItem.status" (change)="save(todoItem)">
+          </label>
+        </th>
+        <th>{{ i+1 }}</th>
 
-<div>
-  <input id="new-item-title" type="text" [(ngModel)]="newItemTitle">
-  <button id="new-item-create" [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">create</button>
+        <th *ngIf="todoItem !== selectedTodoItem">{{ todoItem.title }}</th>
+        <th *ngIf="todoItem === selectedTodoItem">
+          <input type="text" class="form-control"
+                 [(ngModel)]="todoItem.title" (keyup.enter)="save(todoItem)">
+        </th>
+
+        <th *ngIf="todoItem !== selectedTodoItem">
+          <button class="btn btn-danger btn-sm" (click)="delete(todoItem)">
+            <i class="fa fa-trash" aria-hidden="true"></i>Delete
+          </button>
+        </th>
+        <th *ngIf="todoItem === selectedTodoItem">
+          <button class="btn btn-info btn"
+                  #saveButton (click)="save(todoItem)">Save</button>
+        </th>
+      </tr>
+
+      <tr>
+        <th></th>
+        <th></th>
+        <th><input type="text" class="form-control" id="new-item-title"
+                   [(ngModel)]="newItemTitle" (keyup.enter)="createButton.click()"></th>
+        <th><button class="btn btn-secondary" id="new-item-create"
+                    #createButton [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">
+          <i class="fa fa-plus-square" aria-hidden="true"></i>Create</button>
+        </th>
+      </tr>
+
+
+    </tbody>
+  </table>
 </div>

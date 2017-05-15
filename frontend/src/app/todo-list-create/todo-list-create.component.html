@@ -34,6 +34,8 @@
         <option value='full_access'>Full access to everyone</option>
       </select>
     </div>
-    <button class="btn btn-primary" type="submit" [disabled]="!todoListCreateForm.form.valid">Create Todo List</button>
+    <button class="btn btn-primary pull-right" type="submit" [disabled]="!todoListCreateForm.form.valid">
+      <i class="fa fa-plus-square" aria-hidden="true"></i>Create Todo list
+    </button>
   </form>
 </div>

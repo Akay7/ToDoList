@@ -12,7 +12,7 @@ import {FavoriteService} from "../favorite.service";
 @Component({
   selector: 'app-todo-items',
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css']
+  styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
   @Input() todoList: TodoList;
