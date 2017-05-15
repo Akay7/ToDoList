@@ -39,7 +39,7 @@
       <div class="col flex-first">
         <button type="button" class="btn btn-danger" (click)="deleteTodoList()"><i class="fa fa-trash" aria-hidden="true"></i>Delete</button>
       </div>
-      <button type="submit" class="btn btn-secondary pull-right" [routerLink]="['/', todoList.id]"><i class="fa fa-list-ul" aria-hidden="true"></i>Review ToDo list</button>
+      <button type="button" class="btn btn-secondary pull-right" [routerLink]="['/', todoList.id]"><i class="fa fa-list-ul" aria-hidden="true"></i>Review ToDo list</button>
       <button type="submit" class="btn btn-primary pull-right" [disabled]="!todoListSettingsForm.form.valid"><i class="fa fa-floppy-o" aria-hidden="true"></i>Update</button>
     </div>
   </form>

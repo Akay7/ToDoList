@@ -8,7 +8,7 @@ import { TodoItemService } from '../todo-item.service';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent implements OnInit {
-  title = 'ToDo list!';
+  errors: {string: any};
 
   constructor(
     private router: Router,
@@ -20,9 +20,10 @@ export class MainPageComponent implements OnInit {
   add(title: string): void {
     title = title.trim();
     if (!title) { return; }
-    this.todoItemService.createTodoItemWithNewList(title).then(
-      todoItem => this.router.navigate(['/', todoItem.todo_list])
-    );
-
+    this.todoItemService.createTodoItemWithNewList(title)
+      .subscribe(
+        response => this.router.navigate(['/', response.json().todo_list]),
+        error => this.errors = error.json()
+      );
   }
 }

@@ -29,42 +29,42 @@
     <tbody>
       <tr *ngFor="let todoItem of todoItems | orderById; let i = index"
           (click)="editTodoItem(todoItem)">
-        <th>
+        <td>
           <label class="form-check-label">
             <input type="checkbox" class="form-check-input big-checkbox"
                    [(ngModel)]="todoItem.status" (change)="save(todoItem)">
           </label>
-        </th>
-        <th>{{ i+1 }}</th>
+        </td>
+        <td>{{ i+1 }}</td>
 
-        <th *ngIf="todoItem !== selectedTodoItem" [ngClass]="{'done': todoItem.status}">
+        <td *ngIf="todoItem !== selectedTodoItem" [ngClass]="{'done': todoItem.status}">
           {{ todoItem.title }}
-        </th>
-        <th *ngIf="todoItem === selectedTodoItem">
+        </td>
+        <td *ngIf="todoItem === selectedTodoItem">
           <input type="text" class="form-control"
                  [(ngModel)]="todoItem.title" (keyup.enter)="save(todoItem)">
-        </th>
+        </td>
 
-        <th *ngIf="todoItem !== selectedTodoItem">
+        <td *ngIf="todoItem !== selectedTodoItem">
           <button class="btn btn-danger btn-sm" (click)="delete(todoItem)">
             <i class="fa fa-trash" aria-hidden="true"></i>Delete
           </button>
-        </th>
-        <th *ngIf="todoItem === selectedTodoItem">
+        </td>
+        <td *ngIf="todoItem === selectedTodoItem">
           <button class="btn btn-info btn"
                   #saveButton (click)="save(todoItem)">Save</button>
-        </th>
+        </td>
       </tr>
 
       <tr>
-        <th></th>
-        <th></th>
-        <th><input type="text" class="form-control" id="new-item-title"
-                   [(ngModel)]="newItemTitle" (keyup.enter)="createButton.click()"></th>
-        <th><button class="btn btn-secondary" id="new-item-create"
+        <td></td>
+        <td></td>
+        <td><input type="text" class="form-control" id="new-item-title"
+                   [(ngModel)]="newItemTitle" (keyup.enter)="createButton.click()"></td>
+        <td><button class="btn btn-secondary" id="new-item-create"
                     #createButton [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">
           <i class="fa fa-plus-square" aria-hidden="true"></i>Create</button>
-        </th>
+        </td>
       </tr>
 
 
