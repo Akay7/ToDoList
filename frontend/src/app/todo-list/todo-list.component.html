@@ -37,7 +37,9 @@
         </th>
         <th>{{ i+1 }}</th>
 
-        <th *ngIf="todoItem !== selectedTodoItem">{{ todoItem.title }}</th>
+        <th *ngIf="todoItem !== selectedTodoItem" [ngClass]="{'done': todoItem.status}">
+          {{ todoItem.title }}
+        </th>
         <th *ngIf="todoItem === selectedTodoItem">
           <input type="text" class="form-control"
                  [(ngModel)]="todoItem.title" (keyup.enter)="save(todoItem)">
