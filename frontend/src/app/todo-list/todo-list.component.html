@@ -1,5 +1,8 @@
 <div class="container" *ngIf="todoList">
   <h1>{{ todoList.title || 'Todo list without title'  }}</h1>
+  <button class="btn btn-secondary btn-sm" [routerLink]="['/', todoList.id, 'settings']">
+    <i class="fa fa-cog" aria-hidden="true"></i>Settings
+  </button>
 
   <button class="btn btn-info btn-sm"
           *ngIf="todoList | watch" (click)="unwatch(todoList.id)">
