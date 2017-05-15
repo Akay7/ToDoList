@@ -1,6 +1,4 @@
-*.pyc
 media/
-backend/todo_list/settings/prod.py
-db.sqlite3
+log/
 .idea
 geckodriver.log
