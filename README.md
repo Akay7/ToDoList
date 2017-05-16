@@ -48,7 +48,15 @@ all commands run inside frontend folder
 for correct works requests to api, 
 you must start backend dev server, step 5 in Backend section). 
 
+### Deploy tools
+
+I'm thinking long time about public deploy tools(with config from server) or keep in secret. 
+And for now I'm make choice publish systemd circus service and fabfile wich I'm use for upgrade server.
+So I will keep in secret nGinx config file and version of django settings which used on server.
+I'm also hopeful if anyone find vulnerable in those configs or in the project, they will send direct email to [me](mailto:egor@crazyrussian.pro).
+
 ### Credits
 
-1. Łukasz Wojciechowski [article about angular2 and web-sockets](https://medium.com/@lwojciechowski/websockets-with-angular2-and-rxjs-8b6c5be02fac).
-2. I'm take implementation of web-sockets for angular2 by Peter Kassenaar from his github [repo](https://github.com/PeterKassenaar/ng2-websockets) 
+1. I'm to know about TDD from [book Percival Test-Driven Development with Python of Harry J.W.](http://www.obeythetestinggoat.com/pages/book.html)(I'm read first edition, soon will released 2 edition, but some aspects from first book is still actual)
+2. Łukasz Wojciechowski [article about angular2 and web-sockets](https://medium.com/@lwojciechowski/websockets-with-angular2-and-rxjs-8b6c5be02fac).
+3. I'm take implementation of web-sockets for angular2 by Peter Kassenaar from his github [repo](https://github.com/PeterKassenaar/ng2-websockets)
