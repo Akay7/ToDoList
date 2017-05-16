@@ -43,10 +43,10 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='drf-auth')),
-    url(r'^', include('django.contrib.auth.urls')),
     url(r'^', TemplateView.as_view(template_name='index.html')),
 
-    # this needed just for send confirm email when user registering on site
+    # this needed just for send confirm emails
+    url(r'^', include('django.contrib.auth.urls')),
     url(r'^registration/account-confirm-email/(?P<key>[-:\w]+)/$',
         TemplateView.as_view(),
         name='account_confirm_email'),

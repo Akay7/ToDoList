@@ -34,3 +34,7 @@ X_FRAME_OPTIONS = 'DENY'
 # SECURE_SSL_REDIRECT = True # Turned off because nGinx do that
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# FixMe: set up real email for sending reset password instructions and other notifications
