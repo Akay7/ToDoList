@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  ws_url: 'ws://' + window.location.host
+  ws_url: 'wss://' + window.location.host
 };
