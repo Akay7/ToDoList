@@ -11,7 +11,7 @@
         "assets",
         "favicon.ico"
       ],
-      "deployUrl": "static",
+      "deployUrl": "/static/",
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
