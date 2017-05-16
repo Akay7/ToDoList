@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class TodoItemService {
-  private todoItemsUrl = 'api/web/todo_item/';
+  private todoItemsUrl = '/api/web/todo_item/';
 
   private _todoItems: {[id: string]: Subject<TodoItem[]>};
   private dataStore: { [id: string]: TodoItem[] };
@@ -59,7 +59,7 @@ export class TodoItemService {
   }
 
   createTodoItem(title: string, listId: string) {
-    const url = `${this.todoItemsUrl}/?todo_list=${listId}`;
+    const url = `${this.todoItemsUrl}?todo_list=${listId}`;
     return this.http
       .post(url, {title: title,  todo_list: listId})
       .map(response => response.json()).subscribe(data => {
@@ -72,7 +72,7 @@ export class TodoItemService {
   }
 
   updateTodoItem(todoItem: TodoItem) {
-    const url = `${this.todoItemsUrl}${todoItem.id}/?todo_list=${todoItem.todo_list}`;
+    const url = `${this.todoItemsUrl}${todoItem.id}?todo_list=${todoItem.todo_list}`;
     this.http.put(url, todoItem)
       .map(response => response.json())
       .subscribe(data => {
@@ -81,7 +81,7 @@ export class TodoItemService {
   }
 
   deleteTodoItem(todoItem: TodoItem) {
-    const url = `${this.todoItemsUrl}${todoItem.id}/?todo_list=${todoItem.todo_list}`;
+    const url = `${this.todoItemsUrl}${todoItem.id}?todo_list=${todoItem.todo_list}`;
     this.http.delete(url)
       .subscribe(response => {
         this.dataStore[todoItem.todo_list] = this.dataStore[
