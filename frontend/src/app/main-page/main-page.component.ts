@@ -5,10 +5,10 @@ import { TodoItemService } from '../todo-item.service';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css']
+  styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit {
-  errors: {string: any};
+  newTodoTitle: string;
 
   constructor(
     private router: Router,
@@ -23,7 +23,7 @@ export class MainPageComponent implements OnInit {
     this.todoItemService.createTodoItemWithNewList(title)
       .subscribe(
         response => this.router.navigate(['/', response.json().todo_list]),
-        error => this.errors = error.json()
+        error => console.log(error.json())
       );
   }
 }

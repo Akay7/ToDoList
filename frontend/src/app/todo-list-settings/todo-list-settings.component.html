@@ -25,11 +25,7 @@
       </select>
     </div>
 
-    <div class="form-group row" [ngClass]="{'has-danger': errors?.mode}">
-      <div class="form-control-feedback col-sm-9 offset-sm-3"
-           *ngFor="let error of errors?.mode">
-        {{ error }}
-      </div>
+    <div class="form-group row">
       <label for="mode" class="col-form-label col-sm-3">Mode</label>
       <select class="form-control col-sm-9" name="mode"
               [(ngModel)]="todoList.mode" #modeField>

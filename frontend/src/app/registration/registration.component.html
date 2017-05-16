@@ -1,13 +1,13 @@
 <div class="container">
   <h1>Registration Form</h1>
-  <div *ngIf="!isSuccess && user">
+  <div *ngIf="!isSuccess && user != null">
     <p>You already have account.</p>
   </div>
   <div *ngIf="isSuccess">
     <p>You successfully registered. Now you can use all functionality of site.</p>
     <p *ngIf="email">Soon you will get emai for validate your email address.</p>
   </div>
-  <form *ngIf="!isSuccess && !user" (ngSubmit)="registerUser(registrationForm)" #registrationForm="ngForm">
+  <form *ngIf="!isSuccess && user == null" (ngSubmit)="registerUser(registrationForm)" #registrationForm="ngForm">
     <div class="form-group row" [ngClass]="{'has-danger': errors?.username}">
       <div class="form-control-feedback col-sm-9 offset-sm-3"
            *ngFor="let error of errors?.username">
