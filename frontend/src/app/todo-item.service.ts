@@ -72,7 +72,7 @@ export class TodoItemService {
   }
 
   updateTodoItem(todoItem: TodoItem) {
-    const url = `${this.todoItemsUrl}${todoItem.id}?todo_list=${todoItem.todo_list}`;
+    const url = `${this.todoItemsUrl}${todoItem.id}/?todo_list=${todoItem.todo_list}`;
     this.http.put(url, todoItem)
       .map(response => response.json())
       .subscribe(data => {
@@ -81,7 +81,7 @@ export class TodoItemService {
   }
 
   deleteTodoItem(todoItem: TodoItem) {
-    const url = `${this.todoItemsUrl}${todoItem.id}?todo_list=${todoItem.todo_list}`;
+    const url = `${this.todoItemsUrl}${todoItem.id}/?todo_list=${todoItem.todo_list}`;
     this.http.delete(url)
       .subscribe(response => {
         this.dataStore[todoItem.todo_list] = this.dataStore[

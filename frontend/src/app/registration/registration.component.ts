@@ -11,7 +11,7 @@ import { User } from '../user';
 export class RegistrationComponent implements OnInit {
   errors: {string: any};
   isSuccess = false;
-  user: User;
+  user: User = null;
 
   constructor(private authService: AuthService) {
     this.authService.user.subscribe(user => this.user = user);
