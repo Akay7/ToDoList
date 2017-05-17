@@ -6,7 +6,7 @@ from .models import TodoList
 class IsHaveAccessToTodoList(BasePermission):
     def has_object_permission(self, request, view, obj):
         if (
-            obj.mode == TodoList.ALLOW_FULL_ACCESS or
+            (obj.mode == TodoList.ALLOW_FULL_ACCESS and obj.owner == None) or
             obj.owner == request.user or
             (obj.mode == TodoList.ALLOW_READ and request.method in SAFE_METHODS)
         ):
