@@ -329,6 +329,9 @@ class TodoListPermissionTest(TestCase):
             {'title': 'fruits list'}
         )
         self.assertEqual(response.status_code, 403)
+        # but can get info
+        response = self.client.get('/api/web/todo_list/{}/'.format(self.todo_list.id))
+        self.assertEqual(response.status_code, 200)
 
         self.client.logout()
         # unauth person can't change name of todo_list
