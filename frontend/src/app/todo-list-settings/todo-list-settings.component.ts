@@ -47,4 +47,8 @@ export class TodoListSettingsComponent implements OnInit {
     );
   }
 
+  get isCanEdit(): boolean {
+    return this.todoList.owner === this.user.pk || this.todoList.owner === null;
+  }
+
 }
