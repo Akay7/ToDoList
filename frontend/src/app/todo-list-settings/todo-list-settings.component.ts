@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
+
 import { TodoListService } from '../todo-list.service';
 import { TodoList } from '../todo-list';
 import { AuthService } from '../auth.service';
@@ -15,23 +18,39 @@ export class TodoListSettingsComponent implements OnInit {
   user: User;
   ownerId: number;
   errors: {string: any};
+  ownerOptions;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private todoListService: TodoListService,
-              private authService: AuthService) {
-    this.authService.user.subscribe(user => this.user = user);
-  }
+              private authService: AuthService) {  }
 
   ngOnInit() {
+    this.authService.user.subscribe(user => {
+      this.user = user;
+      this.setOwnerOptions();
+    });
+
     this.route.params
       .switchMap((params: Params) => this.todoListService.get(params['id']))
       .subscribe(todoList => {
         this.todoList = todoList;
-        this.ownerId = todoList.owner;
+        this.setOwnerOptions();
       }, error => {
         this.router.navigate(['/my-todo-lists']);
       });
+  }
+
+  private setOwnerOptions() {
+    this.ownerOptions = [
+      {'value': null, 'description': 'No one'},
+    ];
+    if (this.user) {
+      this.ownerOptions.push({'value': this.user.pk, 'description': 'Me'});
+    }
+    if (this.todoList && this.todoList.owner && (this.user === null || this.todoList.owner !== this.user.pk)) {
+      this.ownerOptions.push({'value': this.todoList.owner, 'description': 'Other User'});
+    }
   }
 
   updateTodoList(form): void {
@@ -50,5 +69,19 @@ export class TodoListSettingsComponent implements OnInit {
   get isCanEdit(): boolean {
     return (this.user && this.todoList.owner === this.user.pk) || this.todoList.owner === null;
   }
+
+  // get ownerOptions() {
+  //   let options = [
+  //     // {'value': null, 'description': 'No one'},
+  //   ];
+  //   if (this.user) {
+  //     options.push({'value': this.user.pk, 'description': 'Me'});
+  //   }
+  //   if (this.todoList.owner && (!this.user || this.todoList.owner !== this.user.pk)) {
+  //     options.push({'value': this.todoList.owner, 'description': 'Other User'});
+  //   }
+  //
+  //   return options;
+  // }
 
 }
