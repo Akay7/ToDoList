@@ -1,0 +1,14 @@
+[Unit]
+Description=Circus process manager for TodoList
+After=syslog.target network.target nss-lookup.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/todo_list/sites/ToDoList/backend/
+ExecReload=/home/todo_list/sites/ToDoList/backend/.venv/bin/circusctl reload
+ExecStart=/home/todo_list/sites/ToDoList/backend/.venv/bin/circusd circus.ini
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
