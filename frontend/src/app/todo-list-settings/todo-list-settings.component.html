@@ -1,8 +1,5 @@
 <div class="container" *ngIf="todoList">
   <h1>{{ todoList.title }}</h1>
-  <div *ngIf="user">
-    {{ user.username }}
-  </div>
   <form (ngSubmit)="updateTodoList(todoListSettingsForm)"
         #todoListSettingsForm="ngForm">
     <div class="form-group row" [ngClass]="{'has-danger': errors?.title}">
@@ -12,7 +9,7 @@
       </div>
       <label for="title" class="col-form-label col-sm-3">Title</label>
       <input type="text" class="form-control col-sm-9" name="title"
-             [(ngModel)]="todoList.title" required
+             [ngModel]="todoList.title" required
              [disabled]="!isCanEdit">
     </div>
 
@@ -23,7 +20,7 @@
       </div>
       <label for="owner" class="col-form-label col-sm-3">Owner</label>
       <select class="form-control col-sm-9" name="owner"
-              [(ngModel)]="todoList.owner" #ownerField="ngModel"
+              [ngModel]="todoList.owner" #ownerField
               [disabled]="!isCanEdit" (change)="todoList.mode='full_access'">
         <option *ngFor="let owner of ownerOptions" [ngValue]="owner.value">{{ owner.description }}</option>
       </select>
@@ -31,15 +28,20 @@
 
     <div class="form-group row">
       <label for="mode" class="col-form-label col-sm-3">Mode</label>
-      <select class="form-control col-sm-9" name="mode"
-              [(ngModel)]="todoList.mode" #modeField
-              [disabled]="!isCanEdit">
+        <select class="form-control col-sm-9" name="mode"
+                [ngModel]="todoList.mode" #modeField
+                [disabled]="!isCanEdit">
         <option value='private'>Just for me</option>
         <option value='read'>Allow read to everyone</option>
         <option value='full_access'>Full access to everyone</option>
       </select>
     </div>
 
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.non_field_errors}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3" *ngFor="let error of errors?.non_field_errors">
+        {{ error }}
+      </div>
+    </div>
     <div class="form-group row">
       <div class="col flex-first">
         <button type="button" class="btn btn-danger" (click)="deleteTodoList()" *ngIf="isCanEdit"><i class="fa fa-trash" aria-hidden="true"></i>Delete</button>

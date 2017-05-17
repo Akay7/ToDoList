@@ -24,6 +24,14 @@ class UserChoices(serializers.PrimaryKeyRelatedField):
 class TodoListSerializer(serializers.ModelSerializer):
     owner = UserChoices(allow_null=True, required=False)
 
+    def validate(self, data):
+        owner = data.get('owner') or self.instance.owner if self.instance else None
+        if not owner and data.get('mode') == TodoList.PRIVATE:
+            raise serializers.ValidationError(
+                "Private ToDo list can't be without owner"
+            )
+        return data
+
     class Meta:
         model = TodoList
         fields = ('id', 'title', 'owner', 'mode',)

@@ -9,6 +9,9 @@ UserModel = get_user_model()
 
 
 class TodoListTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
     def test_can_have_todo_items_in_todo_list(self):
         todo_list = TodoList.objects.create(title='default')
         TodoItem.objects.create(title='brush teeth', todo_list=todo_list)
@@ -151,6 +154,52 @@ class TodoListTests(TestCase):
         # can't make favorite second time
         response = self.client.post('/api/web/favorite/', {'todo_list': todo_list.id})
         self.assertEqual(response.status_code, 400)
+
+    def test_cant_create_private_todo_list_without_owner(self):
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+
+        payload = {'title': 'Products', 'mode': TodoList.PRIVATE, 'owner': ''}
+        response = self.client.post('/api/web/todo_list/', payload)
+        self.assertEqual(response.status_code, 400)
+
+    def test_cant_path_mode_of_todo_list_for_be_without_owner_and_private(self):
+        todo_list = TodoList.objects.create(title='Products')
+
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+
+        payload = {'mode': TodoList.PRIVATE}
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(todo_list.id), payload, format='json'
+        )
+        self.assertEqual(response.status_code, 400)
+
+        todo_list.owner = user
+        todo_list.save()
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(todo_list.id), payload, format='json'
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_cant_path_owner_of_todo_list_for_be_without_owner_and_private(self):
+        todo_list = TodoList.objects.create(title='Products', mode=TodoList.PRIVATE)
+
+        user = UserModel.objects.create(username='user')
+        self.client.force_login(user)
+
+        payload = {'owner': user.id}
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(todo_list.id), payload, format='json'
+        )
+        self.assertEqual(response.status_code, 403)
+
+        todo_list.mode = TodoList.ALLOW_FULL_ACCESS
+        todo_list.save()
+        response = self.client.patch(
+            '/api/web/todo_list/{}/'.format(todo_list.id), payload, format='json'
+        )
+        self.assertEqual(response.status_code, 200)
 
 
 class TodoListPermissionTest(TestCase):

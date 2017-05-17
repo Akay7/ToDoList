@@ -54,34 +54,23 @@ export class TodoListSettingsComponent implements OnInit {
   }
 
   updateTodoList(form): void {
-    this.todoListService.update(this.todoList)
+    this.todoListService.update(this.todoList.id, form.value)
       .then(success => this.errors = null,
             error => this.errors = error.json());
   }
 
   deleteTodoList(): void {
-    this.todoListService.delete(this.todoList).then(
+    this.todoListService.delete(this.todoList.id).then(
       success => { this.router.navigate(['/']); },
       error => { console.log(`can't delete todo list`); }
     );
   }
 
   get isCanEdit(): boolean {
-    return (this.user && this.todoList.owner === this.user.pk) || this.todoList.owner === null;
+    return (
+      (this.user && this.todoList.owner === this.user.pk) ||
+      (this.todoList.owner === null && this.todoList.mode === 'full_access')
+    );
   }
-
-  // get ownerOptions() {
-  //   let options = [
-  //     // {'value': null, 'description': 'No one'},
-  //   ];
-  //   if (this.user) {
-  //     options.push({'value': this.user.pk, 'description': 'Me'});
-  //   }
-  //   if (this.todoList.owner && (!this.user || this.todoList.owner !== this.user.pk)) {
-  //     options.push({'value': this.todoList.owner, 'description': 'Other User'});
-  //   }
-  //
-  //   return options;
-  // }
 
 }
