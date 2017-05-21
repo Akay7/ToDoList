@@ -55,8 +55,13 @@ export class TodoListSettingsComponent implements OnInit {
 
   updateTodoList(form): void {
     this.todoListService.update(this.todoList.id, form.value)
-      .then(success => this.errors = null,
-            error => this.errors = error.json());
+      .then(data => {
+            this.todoList = data;
+            this.errors = null;
+          },
+          error => {
+            this.errors = error.json();
+          });
   }
 
   deleteTodoList(): void {

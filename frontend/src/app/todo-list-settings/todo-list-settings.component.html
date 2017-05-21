@@ -1,7 +1,8 @@
 <div class="container" *ngIf="todoList">
   <h1>{{ todoList.title }}</h1>
   <form (ngSubmit)="updateTodoList(todoListSettingsForm)"
-        #todoListSettingsForm="ngForm">
+        #todoListSettingsForm="ngForm"
+        [ngClass]="{'has-warning': modeField.value==='read' && todoListSettingsForm.value['owner'] === null && isCanEdit}">
     <div class="form-group row" [ngClass]="{'has-danger': errors?.title}">
       <div class="form-control-feedback col-sm-9 offset-sm-3"
            *ngFor="let error of errors?.title">
@@ -38,6 +39,10 @@
     </div>
 
     <div class="form-group row" [ngClass]="{'has-danger': errors?.non_field_errors}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngIf="modeField.value==='read' && todoListSettingsForm.value['owner'] === null && isCanEdit" >
+        If you set ToDo list without owner and access to read only, you will can't update it!
+      </div>
       <div class="form-control-feedback col-sm-9 offset-sm-3" *ngFor="let error of errors?.non_field_errors">
         {{ error }}
       </div>
