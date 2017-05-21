@@ -8,7 +8,7 @@ from .serializers import (
     TodoItemSerializer, TodoListSerializer,
     WatchSerializer, FavoriteSerializer,
 )
-from .permissions import IsHaveAccessToTodoList
+from .permissions import IsHaveAccessToTodoList, IsHaveAccessToTodoItem
 
 
 class TodoItemFilter(django_filters.FilterSet):
@@ -24,6 +24,7 @@ class TodoItemFilter(django_filters.FilterSet):
 class TodoItemViewSet(viewsets.ModelViewSet):
     queryset = TodoItem.objects.all()
     serializer_class = TodoItemSerializer
+    permission_classes = (IsHaveAccessToTodoItem,)
     filter_class = TodoItemFilter
 
 

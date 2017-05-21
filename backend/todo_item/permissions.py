@@ -15,3 +15,14 @@ class IsHaveAccessToTodoList(BasePermission):
         ):
             return True
         return False
+
+
+class IsHaveAccessToTodoItem(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if (
+            obj.todo_list.owner == request.user or
+            obj.todo_list.mode == TodoList.ALLOW_FULL_ACCESS or
+            (obj.todo_list.mode == TodoList.ALLOW_READ and request.method in SAFE_METHODS)
+        ):
+            return True
+        return False
