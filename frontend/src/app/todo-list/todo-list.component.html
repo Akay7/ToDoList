@@ -42,6 +42,7 @@
         <td>
           <label class="form-check-label">
             <input type="checkbox" class="form-check-input big-checkbox"
+                   [disabled]="!canEdit()"
                    [(ngModel)]="todoItem.status" (change)="save(todoItem)">
           </label>
         </td>
@@ -51,12 +52,14 @@
           {{ todoItem.title }}
         </td>
         <td *ngIf="todoItem === selectedTodoItem">
-          <input type="text" class="form-control"
+          <input type="text" class="form-control" maxlength="140"
                  [(ngModel)]="todoItem.title" (keyup.enter)="save(todoItem)">
         </td>
 
         <td *ngIf="todoItem !== selectedTodoItem">
-          <button class="btn btn-danger btn-sm" (click)="delete(todoItem)">
+          <button class="btn btn-danger btn-sm"
+                  *ngIf="canEdit()"
+                  (click)="delete(todoItem); $event.stopPropagation()">
             <i class="fa fa-trash" aria-hidden="true"></i>Delete
           </button>
         </td>
@@ -66,10 +69,10 @@
         </td>
       </tr>
 
-      <tr>
+      <tr *ngIf="canEdit()">
         <td></td>
         <td></td>
-        <td><input type="text" class="form-control" id="new-item-title"
+        <td><input type="text" class="form-control" id="new-item-title" maxlength="140"
                    [(ngModel)]="newItemTitle" (keyup.enter)="createButton.click()"></td>
         <td><button class="btn btn-secondary" id="new-item-create"
                     #createButton [disabled]="!newItemTitle" (click)="add(newItemTitle); newItemTitle=''">

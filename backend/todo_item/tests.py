@@ -280,12 +280,21 @@ class TodoListPermissionTest(TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
-        # other user can't add new todo_items
+        # other user can't add new todo_items and delete
         response = self.client.post(
             '/api/web/todo_item/',
             {'title': 'banana', 'todo_list': self.todo_list.id}
         )
         self.assertEqual(response.status_code, 400)
+
+        response = self.client.delete('/api/web/todo_item/{}/?todo_list={}'.format(
+            self.todo_item1.id, self.todo_list.id))
+        self.assertEqual(response.status_code, 403)
+
+        # but can get todo_item
+        response = self.client.get('/api/web/todo_item/{}/?todo_list={}'.format(
+            self.todo_item1.id, self.todo_list.id))
+        self.assertEqual(response.status_code, 200)
 
         self.client.logout()
         # unauth person can read todo_list
