@@ -3,16 +3,16 @@ import { TestBed, async } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { TodoListComponent } from './todo-list/todo-items.component';
+import { TodoListComponent } from './todo-list/todo-list.component';
 import { OrderByIdPipe } from './order-by-id.pipe';
-import { TodoItemService } from './todo.service';
-import {TodoItem} from './todo-item';
+import { TodoItemService } from './todo-item.service';
+import { TodoItem } from './todo-item';
 
 class MockTodoService {
   TODO_ITEMS: TodoItem[] = [
-    { id: 1, title: 'Awake', status: true},
-    { id: 2, title: 'Brush teeth', status: true},
-    { id: 3, title: 'Procrastinate', status: false},
+    { id: 1, title: 'Awake', status: true, todo_list: '1'},
+    { id: 2, title: 'Brush teeth', status: true , todo_list: '1'},
+    { id: 3, title: 'Procrastinate', status: false, todo_list: '1'},
   ];
 
   getTodoItems(): Promise<TodoItem[]> {

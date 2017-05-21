@@ -7,7 +7,7 @@ import { TodoList } from '../todo-list';
 import { TodoItemService } from '../todo-item.service';
 import { TodoListService } from '../todo-list.service';
 import { WatchService } from '../watch.service';
-import {FavoriteService} from "../favorite.service";
+import { FavoriteService } from '../favorite.service';
 
 @Component({
   selector: 'app-todo-items',
