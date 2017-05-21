@@ -60,7 +60,9 @@ export class TodoListComponent implements OnInit {
   }
 
   editTodoItem(item: TodoItem): void {
-    this.selectedTodoItem = item;
+    if (this.canEdit()) {
+      this.selectedTodoItem = item;
+    }
   }
 
   save(todoItem: TodoItem): void {
@@ -76,5 +78,12 @@ export class TodoListComponent implements OnInit {
 
   delete(todoItem: TodoItem): void {
     this.todoItemService.deleteTodoItem(todoItem);
+  }
+
+  canEdit(): boolean {
+    return (
+      this.todoList.mode === 'full_access' ||
+      (this.user && this.todoList.owner === this.user.pk)
+    );
   }
 }

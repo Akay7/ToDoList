@@ -42,6 +42,7 @@
         <td>
           <label class="form-check-label">
             <input type="checkbox" class="form-check-input big-checkbox"
+                   [disabled]="!canEdit()"
                    [(ngModel)]="todoItem.status" (change)="save(todoItem)">
           </label>
         </td>
@@ -56,7 +57,9 @@
         </td>
 
         <td *ngIf="todoItem !== selectedTodoItem">
-          <button class="btn btn-danger btn-sm" (click)="delete(todoItem)">
+          <button class="btn btn-danger btn-sm"
+                  *ngIf="canEdit()"
+                  (click)="delete(todoItem); $event.stopPropagation()">
             <i class="fa fa-trash" aria-hidden="true"></i>Delete
           </button>
         </td>
@@ -66,7 +69,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr *ngIf="canEdit()">
         <td></td>
         <td></td>
         <td><input type="text" class="form-control" id="new-item-title" maxlength="140"
