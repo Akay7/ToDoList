@@ -8,6 +8,8 @@ import { TodoItemService } from '../todo-item.service';
 import { TodoListService } from '../todo-list.service';
 import { WatchService } from '../watch.service';
 import { FavoriteService } from '../favorite.service';
+import { AuthService } from '../auth.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-todo-items',
@@ -18,12 +20,14 @@ export class TodoListComponent implements OnInit {
   @Input() todoList: TodoList;
   todoItems: TodoItem[];
   selectedTodoItem: TodoItem;
+  user: User;
 
   constructor (
     private router: Router,
     private route: ActivatedRoute,
     private todoListService: TodoListService,
     private todoItemService: TodoItemService,
+    private authService: AuthService,
     private watchService: WatchService,
     private favoriteService: FavoriteService
   ) { }
@@ -32,6 +36,7 @@ export class TodoListComponent implements OnInit {
     this.route.params
       .switchMap((params: Params) => this.todoListService.get(params['id']))
       .subscribe(todoList => {
+        this.authService.user.subscribe(user => this.user = user);
         this.todoList = todoList;
         this.todoItemService.getTodoItems(this.todoList.id).subscribe(todoItems => this.todoItems = todoItems);
       }, error => {

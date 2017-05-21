@@ -1,5 +1,12 @@
 <div class="container" *ngIf="todoList">
   <h1>{{ todoList.title || 'Todo list without title'  }}</h1>
+  <alert type="warning"  dismissible="true" *ngIf="user===null">
+    You not logged in that's why you can't add this ToDo list to favorite or subscribe to updates.
+  </alert>
+  <alert type="warning"  dismissible="true" *ngIf="!((todoList | favorite) || (todoList | watch) || (todoList | owner))">
+    When you not owner, subscribed and ToDoList not in your favorite, then you can look at list just by direct link.
+  </alert>
+
   <button class="btn btn-secondary btn-sm" [routerLink]="['/', todoList.id, 'settings']">
     <i class="fa fa-cog" aria-hidden="true"></i>Settings
   </button>

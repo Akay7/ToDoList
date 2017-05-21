@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
 
+import { AlertModule } from 'ngx-bootstrap';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainPageComponent } from './main-page/main-page.component';
@@ -54,6 +56,9 @@ export function xsrfFactory() {
     BrowserModule,
     FormsModule,
     HttpModule,
+
+    AlertModule.forRoot(),
+
     AppRoutingModule
   ],
   providers: [
