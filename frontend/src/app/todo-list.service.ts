@@ -33,17 +33,17 @@ export class TodoListService {
       .catch(this.handleError);
   }
 
-  update(todoList: TodoList): Promise<TodoList> {
-    const url = `${this.todoListUrl}${todoList.id}/`;
+  update(id: string, payload): Promise<TodoList> {
+    const url = `${this.todoListUrl}${id}/`;
     return this.http
-      .put(url, todoList)
+      .put(url, payload)
       .toPromise()
       .then(res => res.json() as TodoList)
       .catch(this.handleError);
   }
 
-  delete(todoList: TodoList): Promise<void> {
-    const url = `${this.todoListUrl}${todoList.id}/`;
+  delete(id: string): Promise<void> {
+    const url = `${this.todoListUrl}${id}/`;
     return this.http.delete(url)
       .toPromise()
       .then(() => null)

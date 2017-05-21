@@ -15,7 +15,9 @@ export class OwnerPipe implements PipeTransform {
   }
 
   transform(todoList: TodoList, args?: any): any {
-    return todoList.owner === this.user.pk;
+    // user with uid -1 will never exist in system
+    const user_uid = this.user ? this.user.pk : -1;
+    return todoList.owner === user_uid;
   }
 
 }
