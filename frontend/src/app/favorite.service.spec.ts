@@ -1,36 +1,16 @@
-import { tick, fakeAsync} from '@angular/core/testing';
-import {ReflectiveInjector} from '@angular/core';
-import {BaseRequestOptions, ConnectionBackend, Http, RequestOptions} from '@angular/http';
-import {Response, ResponseOptions} from '@angular/http';
-import {MockBackend, MockConnection} from '@angular/http/testing';
+import { tick, fakeAsync } from '@angular/core/testing';
+import { ReflectiveInjector } from '@angular/core';
+import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
+import { Response, ResponseOptions } from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
+import { Favorite } from './favorite';
 import { FavoriteService } from './favorite.service';
+import { AuthService } from './auth.service';
+import { MockAuthService } from './mock.auth.service';
 
-import {Favorite} from './favorite';
-import {AuthService} from './auth.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {User} from './user';
-
-
-class MockAuthService {
-  private _user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-
-  get user() {
-    return this._user.asObservable();
-  }
-
-  login(payload: {string: string}) {
-    this._user.next({
-      'username': 'Test User'
-    } as User);
-  }
-
-  logout() {
-    this._user.next(null);
-  }
-}
 
 describe('FavoriteService', () => {
 
@@ -40,10 +20,11 @@ describe('FavoriteService', () => {
     const injector = ReflectiveInjector.resolveAndCreate([
       {provide: ConnectionBackend, useClass: MockBackend},
       {provide: RequestOptions, useClass: BaseRequestOptions},
+      {provide: AuthService, useClass: MockAuthService},
       Http,
-      AuthService,
       FavoriteService,
     ]);
+    const authService = injector.get(AuthService);
     const backend = injector.get(ConnectionBackend);
     const favoriteService = injector.get(FavoriteService);
 
@@ -54,7 +35,7 @@ describe('FavoriteService', () => {
       { 'todo_list': '002' }
     ];
 
-    favoriteService.reloadFavorites();
+    authService.login();
     favoriteService.favorite.subscribe(favorite => favorites = favorite);
     connection.mockRespond(new Response(new ResponseOptions({body: mockFavoriteResponse})));
     tick();
@@ -82,7 +63,6 @@ describe('FavoriteService', () => {
       { 'todo_list': '002' }
     ];
 
-    favoriteService.reloadFavorites();
     authService.login();
     favoriteService.favorite.subscribe(favorite => favorites = favorite);
     connection.mockRespond(new Response(new ResponseOptions({body: mockFavoriteResponse})));

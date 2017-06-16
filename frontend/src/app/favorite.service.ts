@@ -21,13 +21,13 @@ export class FavoriteService {
         this._favoriteStore = [];
         this._favorite.next(this._favoriteStore);
       } else {
-        this.reloadFavorites();
+        this.reload();
       }
     });
-    this.reloadFavorites();
+    this.reload();
   }
 
-  private reloadFavorites() {
+  private reload() {
     this.http.get(this.favoriteUrl)
       .map(res => res.json())
       .subscribe(data => {
