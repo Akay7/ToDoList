@@ -3,20 +3,37 @@ import { Http } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Watch } from './watch';
+import { AuthService } from './auth.service';
+import { User } from './user';
 
 @Injectable()
 export class WatchService {
   private watchUrl = '/api/web/watch/';
   private _watch: BehaviorSubject<Watch[]> = new BehaviorSubject<Watch[]>([]);
   private _watchStore: Watch[];
+  private user: User;
 
-  constructor(private http: Http) {
-    this.http.get(this.watchUrl)
-    .map(res => res.json())
-    .subscribe(data => {
-      this._watchStore = data;
-      this._watch.next(this._watchStore);
+  constructor(private http: Http,
+              private authService: AuthService) {
+    authService.user.subscribe(user => {
+      this.user = user;
+      if (!this.user) {
+        this._watchStore = [];
+        this._watch.next(this._watchStore);
+      } else {
+        this.reload();
+      }
     });
+    this.reload();
+  }
+
+  private reload() {
+    this.http.get(this.watchUrl)
+      .map(res => res.json())
+      .subscribe(data => {
+        this._watchStore = data;
+        this._watch.next(this._watchStore);
+      });
   }
 
   get watch() {
