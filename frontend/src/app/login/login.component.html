@@ -13,18 +13,26 @@
       </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.username}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.username">
+        {{ error }}
+      </div>
       <label for="username" class="col-form-label col-sm-3">Username</label>
-      <input type="text" class="form-control col-sm-9"
+      <input type="text" class="form-control col-sm-9" required
              [(ngModel)]="username" name="username">
 
     </div>
-    <div class="form-group row">
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.password}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.password">
+        {{ error }}
+      </div>
       <label for="password" class="col-form-label col-sm-3">Password</label>
-      <input type="password" class="form-control col-sm-9"
+      <input type="password" class="form-control col-sm-9" required
              [(ngModel)]="password" name="password">
     </div>
     <button type="submit" class="btn btn-primary pull-right"
-            >Login</button>
+            [disabled]="!loginForm.form.valid">Login</button>
   </form>
 </div>
