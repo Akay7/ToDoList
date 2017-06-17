@@ -19,12 +19,8 @@
           <a class="nav-link"  [routerLink]="['/password-reset']">Reset password</a>
         </li>
       </ul>
-      <form class="form-inline" [ngClass]="{'has-danger': errors?.non_field_errors}"
+      <form class="form-inline"
               *ngIf="!user" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
-        <div class="form-control-feedback"
-              *ngFor="let error of errors?.non_field_errors">
-          {{ error }}
-        </div>
         <div class="input-group">
           <input class="form-control"
                  name="username" type="text" placeholder="Username" required

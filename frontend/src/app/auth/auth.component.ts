@@ -10,7 +10,6 @@ import { User } from '../user';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  errors: {string: any};
   user: User;
   isShow = false;
 
@@ -31,7 +30,8 @@ export class AuthComponent implements OnInit {
         res => {
           this.user = res.json();
         }, error => {
-          this.errors = error.json();
+          const errors = error.json();
+          this.router.navigate(['/login',  { errors: JSON.stringify(errors)}]);
         });
     form.resetForm();
   }
