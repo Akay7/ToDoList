@@ -1,25 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { User } from '../user';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class AuthComponent implements OnInit {
+export class LoginComponent implements OnInit {
   errors: {string: any};
   user: User;
-  isShow = false;
 
-  constructor(private router: Router,
-              private authService: AuthService) {
-    router.events.subscribe((val) => {
-      this.isShow = false;
-    });
-  }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.user.subscribe(user => this.user = user);
@@ -32,14 +25,8 @@ export class AuthComponent implements OnInit {
           this.user = res.json();
         }, error => {
           this.errors = error.json();
-          this.router.navigate(['/login']);
         });
     form.resetForm();
   }
-  logout() {
-    this.authService.logout()
-      .subscribe(res => {
-        this.router.navigate(['/']);
-      });
-  }
+
 }
