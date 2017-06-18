@@ -29,6 +29,7 @@ import { AccountConfirmEmailComponent } from './account-confirm-email/account-co
 import { TodoListSettingsComponent } from './todo-list-settings/todo-list-settings.component';
 import { TodoListCreateComponent } from './todo-list-create/todo-list-create.component';
 import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 export function xsrfFactory() {
@@ -52,7 +53,8 @@ export function xsrfFactory() {
     RegistrationComponent,
     AccountConfirmEmailComponent,
     TodoListCreateComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
