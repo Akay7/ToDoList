@@ -1,0 +1,17 @@
+<div class="container">
+<div class="row">
+  <nav class="col-sm-3 sidebar">
+    <ul class="nav nav-pills flex-column">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['user']" [routerLinkActive]="['active']">User</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['password']" [routerLinkActive]="['active']">Password</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="col-sm-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+</div>
