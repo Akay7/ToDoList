@@ -23,15 +23,18 @@ export class AuthService {
     return this._user.asObservable();
   }
 
-  updateUser(payload: {string: string}) {
-    // console.log(payload);
+  userUpdate(payload: {string: string}) {
     const url = `${this.authUrl}user/`;
-    // console.log(url);
     return this.http.put(url, payload)
       .do(res => {
         console.log(res.json());
         this._user.next(res.json());
       });
+  }
+
+  passwordChange(payload: {string: string}) {
+    const url = `${this.authUrl}password/change/`;
+    return this.http.post(url, payload);
   }
 
   login(payload: {string: string}) {

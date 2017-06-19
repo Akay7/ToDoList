@@ -19,8 +19,8 @@ export class UserComponent implements OnInit {
   ngOnInit() {
   }
 
-  updateUser(form: NgForm) {
-    this.authService.updateUser(form.value)
+  userUpdate(form: NgForm) {
+    this.authService.userUpdate(form.value)
       .subscribe(data => {
         this.errors = null;
       }, error => {

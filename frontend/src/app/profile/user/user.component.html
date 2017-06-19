@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Profile settings</h1>
-  <form (ngSubmit)="updateUser(profileSettingsForm)"
+  <form (ngSubmit)="userUpdate(profileSettingsForm)"
         #profileSettingsForm="ngForm" *ngIf="user != null">
     <div class="form-control-feedback col-sm-9 offset-sm-3"
          *ngFor="let error of error?.non_field_errors">
