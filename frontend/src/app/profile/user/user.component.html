@@ -1,0 +1,44 @@
+<div class="container">
+  <h1>Profile settings</h1>
+  <form (ngSubmit)="updateUser(profileSettingsForm)"
+        #profileSettingsForm="ngForm" *ngIf="user != null">
+    <div class="form-control-feedback col-sm-9 offset-sm-3"
+         *ngFor="let error of error?.non_field_errors">
+    </div>
+
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.username}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.username">
+        {{ error }}
+      </div>
+      <label for="username" class="col-form-label col-sm-3">Username</label>
+      <input type="text" class="form-control col-sm-9"
+             [ngModel]="user.username" name="username">
+    </div>
+
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.first_name}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.first_name">
+        {{ error }}
+      </div>
+      <label for="first_name" class="col-form-label col-sm-3">First name</label>
+      <input type="text" class="form-control col-sm-9"
+             [ngModel]="user.first_name" name="first_name">
+    </div>
+
+
+    <div class="form-group row" [ngClass]="{'has-danger': errors?.last_name}">
+      <div class="form-control-feedback col-sm-9 offset-sm-3"
+           *ngFor="let error of errors?.last_name">
+        {{ error }}
+      </div>
+      <label for="last_name" class="col-form-label col-sm-3">Last name</label>
+      <input type="text" class="form-control col-sm-9"
+             [ngModel]="user.last_name" name="last_name">
+    </div>
+
+    <button type="submit" class="btn btn-primary pull-right"
+            [disabled]="!profileSettingsForm.form.valid">Save</button>
+
+  </form>
+</div>

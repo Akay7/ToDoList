@@ -30,6 +30,8 @@ import { TodoListSettingsComponent } from './todo-list-settings/todo-list-settin
 import { TodoListCreateComponent } from './todo-list-create/todo-list-create.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UserComponent } from './profile/user/user.component';
+import { PasswordChangeComponent } from './profile/password-change/password-change.component';
 
 
 export function xsrfFactory() {
@@ -54,7 +56,9 @@ export function xsrfFactory() {
     AccountConfirmEmailComponent,
     TodoListCreateComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    UserComponent,
+    PasswordChangeComponent
   ],
   imports: [
     BrowserModule,

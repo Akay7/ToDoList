@@ -12,6 +12,8 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AccountConfirmEmailComponent } from './account-confirm-email/account-confirm-email.component';
+import {UserComponent} from 'app/profile/user/user.component';
+import {PasswordChangeComponent} from './profile/password-change/password-change.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -21,7 +23,13 @@ const routes: Routes = [
   { path: 'registration', component: RegistrationComponent },
   { path: 'registration/account-confirm-email/:key', component: AccountConfirmEmailComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent,
+    children: [
+      { path: '', redirectTo: 'user', pathMatch: 'full' },
+      { path: 'user', component: UserComponent },
+      { path: 'password', component: PasswordChangeComponent },
+    ]
+  },
   { path: 'todo-list-create', component: TodoListCreateComponent },
   { path: ':id/settings', component: TodoListSettingsComponent },
   { path: ':id', component: TodoListComponent }

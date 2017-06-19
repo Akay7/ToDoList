@@ -12,16 +12,16 @@
          [ngClass]="{'show': isShow }">
       <ul class="navbar-nav mr-auto" *ngIf="user">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/profile']">{{ user.username }} profile</a>
+          <a class="nav-link" [routerLink]="['/profile']" [routerLinkActive]="['active']">{{ user.username }} profile</a>
         </li>
       </ul>
 
       <ul class="navbar-nav mr-auto"  *ngIf="!user">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/registration']">Registration</a>
+          <a class="nav-link" [routerLink]="['/registration']" [routerLinkActive]="['active']">Registration</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  [routerLink]="['/password-reset']">Reset password</a>
+          <a class="nav-link"  [routerLink]="['/password-reset']" [routerLinkActive]="['active']">Reset password</a>
         </li>
       </ul>
       <form class="form-inline"
