@@ -9,7 +9,4 @@ describe('ChannelService', () => {
     });
   });
 
-  it('should ...', inject([ChannelService], (service: ChannelService) => {
-    expect(service).toBeTruthy();
-  }));
 });

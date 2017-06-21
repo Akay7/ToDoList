@@ -9,6 +9,6 @@ describe('frontend App', () => {
 
   it('should display message saying ToDo list!', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('ToDo list!');
+    expect(page.getParagraphText()).toEqual('Create your ToDo list!!!');
   });
 });

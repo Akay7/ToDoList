@@ -16,10 +16,10 @@
           <td>1</td>
           <td>
             <input type="text" class="form-control" required maxlength="140"
-                   [(ngModel)]="newTodoTitle" name="title">
+                   [(ngModel)]="newTodoTitle" name="title" id="new-item-title">
           </td>
           <td>
-            <button type="submit" class="btn btn-info"
+            <button type="submit" class="btn btn-info" id="new-item-create"
                     [disabled]="!mainPageCreateForm.form.valid">Create</button>
           </td>
         </tr>
