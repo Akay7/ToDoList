@@ -1,5 +1,9 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -28,6 +32,12 @@ class FunctionalTest(StaticLiveServerTestCase):
         input_box.send_keys(todo_title)
         create_button.click()
 
+        # waiting when loaded second page with table of todos
+        WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "table"))
+        )
+
+
         # test new todo_must be created
         self.assertIn(
             todo_title,
@@ -36,6 +46,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def test_can_see_todo_item_created_in_different_window_of_browser(self):
         # ToDo: ask about StaticLiveServerTestCase for channel
+        # FixMe: update that test case for server with channels
         todo_title = "Brush teeth"
 
         # connect to server from two browser instances
