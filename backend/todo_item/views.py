@@ -37,7 +37,7 @@ class TodoListViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             user = self.request.user
 
-            if not user.is_authenticated():
+            if not user.is_authenticated:
                 return self.queryset.none()
 
             return self.queryset.filter(Q(owner=user) | (

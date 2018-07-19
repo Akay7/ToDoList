@@ -38,8 +38,8 @@ auth_patterns = [
 ]
 
 urlpatterns = [
-    url(r'^api/web/', include(router.urls, namespace="api_web")),
-    url(r'^api/web/', include(auth_patterns, namespace="rest_auth")),
+    url(r'^api/web/', include(router.urls)),
+    url(r'^api/web/', include(auth_patterns)),
 
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='drf-auth')),

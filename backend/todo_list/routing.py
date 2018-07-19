@@ -24,10 +24,10 @@ class Demultiplexer(WebsocketDemultiplexer):
         todo_list_id = query_params.get('todo_list')
 
         query = Q()
-        if self.message.user.is_authenticated():
+        if self.message.user.is_authenticated:
             query &= (
-                (Q(owner=self.message.user) | Q(mode=TodoList.ALLOW_FULL_ACCESS) | Q(mode=TodoList.ALLOW_READ)) &
-                Q(watch__user=self.message.user)
+                (Q(owner=self.message.user) | Q(mode=TodoList.ALLOW_FULL_ACCESS) | Q(mode=TodoList.ALLOW_READ))
+                & Q(watch__user=self.message.user)
             )
 
         if todo_list_id:
@@ -36,6 +36,7 @@ class Demultiplexer(WebsocketDemultiplexer):
         if query:
             groups.extend(map(str, TodoList.objects.filter(query).values_list('id', flat=True)))
         return groups
+
 
 channel_routing = [
     route_class(Demultiplexer, path="^/api/ws/$")

@@ -19,7 +19,7 @@ class TodoList(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     title = models.CharField(max_length=140)
-    owner = models.ForeignKey(UserModel, related_name='todo_lists', null=True, blank=True)
+    owner = models.ForeignKey(UserModel, related_name='todo_lists', null=True, blank=True, on_delete=models.CASCADE)
     mode = models.CharField(max_length=20, choices=MODES, default=ALLOW_FULL_ACCESS)
 
     def __str__(self):
@@ -27,7 +27,7 @@ class TodoList(models.Model):
 
 
 class TodoItem(models.Model):
-    todo_list = models.ForeignKey(TodoList, related_name="todo_items", null=True)
+    todo_list = models.ForeignKey(TodoList, related_name="todo_items", null=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=140)
     status = models.BooleanField(default=False)
 
@@ -52,16 +52,16 @@ class TodoItemBinding(WebsocketBinding):
 
 
 class Watch(models.Model):
-    user = models.ForeignKey(UserModel)
-    todo_list = models.ForeignKey(TodoList)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    todo_list = models.ForeignKey(TodoList, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('user', 'todo_list',),)
 
 
 class Favorite(models.Model):
-    user = models.ForeignKey(UserModel)
-    todo_list = models.ForeignKey(TodoList)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    todo_list = models.ForeignKey(TodoList, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('user', 'todo_list',),)

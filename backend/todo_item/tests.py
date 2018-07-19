@@ -1,6 +1,6 @@
-from django.test import TestCase
+# from django.test import TestCase
 from django.contrib.auth import get_user_model
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase
 from channels.test import ChannelTestCase, HttpClient
 
 from .models import TodoItem, TodoList, Watch, Favorite
@@ -8,10 +8,7 @@ from .models import TodoItem, TodoList, Watch, Favorite
 UserModel = get_user_model()
 
 
-class TodoListTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-
+class TodoListTests(APITestCase):
     def test_can_have_todo_items_in_todo_list(self):
         todo_list = TodoList.objects.create(title='default')
         TodoItem.objects.create(title='brush teeth', todo_list=todo_list)
@@ -202,9 +199,8 @@ class TodoListTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class TodoListPermissionTest(TestCase):
+class TodoListPermissionTest(APITestCase):
     def setUp(self):
-        self.client = APIClient()
         self.owner = UserModel.objects.create(username='owner')
         self.other_person = UserModel.objects.create(username='other_person')
         self.todo_list = TodoList.objects.create(title='fruits', owner=self.owner)

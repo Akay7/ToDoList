@@ -16,7 +16,7 @@ class UserChoices(serializers.PrimaryKeyRelatedField):
 
     def get_queryset(self):
         user = self.context['request'].user
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             return self.queryset.objects.none()
         return self.queryset.objects.filter(id=user.id)
 
@@ -41,7 +41,7 @@ class TodoListChoices(serializers.PrimaryKeyRelatedField):
     def get_queryset(self):
         user = self.context['request'].user
         query = Q()
-        if user.is_authenticated():
+        if user.is_authenticated:
             query |= Q(owner=user)
         query |= Q(mode=TodoList.ALLOW_FULL_ACCESS) | Q(mode=TodoList.ALLOW_READ)
         return TodoList.objects.filter(query)
@@ -51,8 +51,8 @@ class TodoItemSerializer(serializers.ModelSerializer):
     todo_list = TodoListChoices(required=False)
 
     def validate_todo_list(self, todo_list):
-        if (todo_list.owner != self.context['request'].user and
-                    todo_list.mode == TodoList.ALLOW_READ):
+        if (todo_list.owner != self.context['request'].user
+                and todo_list.mode == TodoList.ALLOW_READ):
             raise serializers.ValidationError(
                 _("You can't add new item to readonly todo lists")
             )
@@ -62,7 +62,7 @@ class TodoItemSerializer(serializers.ModelSerializer):
         if 'todo_list' not in validated_data:
             validated_data['todo_list'] = TodoList.objects.create()
         return super(TodoItemSerializer, self).create(validated_data)
-    
+
     class Meta:
         model = TodoItem
         fields = ('id', 'title', 'status', 'todo_list',)
