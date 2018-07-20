@@ -70,9 +70,7 @@ class TodoItemSerializer(serializers.ModelSerializer):
 
 class WatchSerializer(serializers.ModelSerializer):
     todo_list = TodoListChoices()
-    user = serializers.PrimaryKeyRelatedField(
-        default=serializers.CurrentUserDefault(), read_only=True
-    )
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Watch
@@ -84,9 +82,7 @@ class WatchSerializer(serializers.ModelSerializer):
 
 class FavoriteSerializer(serializers.ModelSerializer):
     todo_list = TodoListChoices()
-    user = serializers.PrimaryKeyRelatedField(
-        default=serializers.CurrentUserDefault(), read_only=True
-    )
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Favorite

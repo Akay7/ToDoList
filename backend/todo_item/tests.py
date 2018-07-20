@@ -152,6 +152,18 @@ class TodoListTests(APITestCase):
         response = self.client.post('/api/web/favorite/', {'todo_list': todo_list.id})
         self.assertEqual(response.status_code, 400)
 
+    def test_cant_add_to_favorite_from_other_user(self):
+        user1 = UserModel.objects.create(username='user')
+        user2 = UserModel.objects.create(username='user2')
+        self.client.force_login(user1)
+        todo_list = TodoList.objects.create(title="Fruits")
+
+        response = self.client.post('/api/web/favorite/', {'todo_list': todo_list.id, 'user': user2.id})
+        self.assertEqual(response.status_code, 201)
+
+        self.assertTrue(Favorite.objects.filter(user=user1, todo_list=todo_list).exists())
+        self.assertFalse(Favorite.objects.filter(user=user2, todo_list=todo_list).exists())
+
     def test_cant_create_private_todo_list_without_owner(self):
         user = UserModel.objects.create(username='user')
         self.client.force_login(user)
