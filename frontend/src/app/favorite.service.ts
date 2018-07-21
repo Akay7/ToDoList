@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Favorite } from './favorite';
@@ -13,7 +13,7 @@ export class FavoriteService {
   private _favoriteStore: Favorite[];
   private user: User;
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private authService: AuthService) {
     authService.user.subscribe(user => {
       this.user = user;
@@ -28,8 +28,7 @@ export class FavoriteService {
   }
 
   private reload() {
-    this.http.get(this.favoriteUrl)
-      .map(res => res.json())
+    this.http.get<Favorite[]>(this.favoriteUrl)
       .subscribe(data => {
         this._favoriteStore = data;
         this._favorite.next(this._favoriteStore);

@@ -1,7 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CookieXSRFStrategy, HttpModule, XSRFStrategy } from '@angular/http';
+import { CookieXSRFStrategy, HttpModule, XSRFStrategy} from '@angular/http';
+import { HttpClientXsrfModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AlertModule } from 'ngx-bootstrap';
 
@@ -63,14 +65,13 @@ export function xsrfFactory() {
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
 
     AlertModule.forRoot(),
 
     AppRoutingModule
   ],
   providers: [
-    {provide: XSRFStrategy, useFactory: xsrfFactory},
     AuthService,
     TodoListService,
     TodoItemService,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from "@angular/common/http";
 import 'rxjs/add/operator/toPromise';
 
 import { ChannelService } from './channel.service';
@@ -13,7 +13,7 @@ export class TodoItemService {
   private _todoItems: {[id: string]: Subject<TodoItem[]>};
   private dataStore: { [id: string]: TodoItem[] };
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private channelService: ChannelService) {
     this.dataStore = {};
     this._todoItems = {};
@@ -45,7 +45,8 @@ export class TodoItemService {
     const url = `${this.todoItemsUrl}?todo_list=${listId}`;
 
     this._todoItems[listId] = new Subject<TodoItem[]>();
-    this.http.get(url).map(res => res.json()).subscribe(
+    this.http.get<TodoItem[]>(url)
+      .subscribe(
       data => {
         this.dataStore[listId] = data;
         this._todoItems[listId].next(this.dataStore[listId]);

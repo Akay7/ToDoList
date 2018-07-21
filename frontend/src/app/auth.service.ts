@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {HttpClient} from "@angular/common/http";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 
 import { User } from './user';
 
+
 @Injectable()
 export class AuthService {
   private authUrl = '/api/web/';
   private _user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     const url = `${this.authUrl}user/`;
-    this.http.get(url)
-      .subscribe(data => {
-        this._user.next(data.json());
+    this.http.get<User>(url)
+      .subscribe(user => {
+        this._user.next(user);
       });
   }
 
@@ -27,7 +28,6 @@ export class AuthService {
     const url = `${this.authUrl}user/`;
     return this.http.put(url, payload)
       .do(res => {
-        console.log(res.json());
         this._user.next(res.json());
       });
   }
