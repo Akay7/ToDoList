@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {AuthService} from '../../auth.service';
+import { NgForm } from '@angular/forms';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-password-change',
@@ -21,7 +21,7 @@ export class PasswordChangeComponent implements OnInit {
     this.errors = null;
     this.authService.passwordChange(form.value)
       .subscribe(data => {
-        this.feedback = data.json().detail;
+        this.feedback = data.detail;
       }, error => {
         this.errors = error.json();
       });

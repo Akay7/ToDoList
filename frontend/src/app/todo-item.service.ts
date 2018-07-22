@@ -56,17 +56,17 @@ export class TodoItemService {
 
   createTodoItemWithNewList(title: string) {
     return this.http
-      .post(this.todoItemsUrl, {title: title});
+      .post<TodoItem>(this.todoItemsUrl, {title: title});
   }
 
   createTodoItem(title: string, listId: string) {
     const url = `${this.todoItemsUrl}?todo_list=${listId}`;
     return this.http
-      .post(url, {title: title,  todo_list: listId})
-      .map(response => response.json()).subscribe(data => {
+      .post<TodoItem>(url, {title: title,  todo_list: listId})
+      .subscribe(todoItem => {
         // sometimes socket can create new todo_item before response come
-        if (!this.dataStore[listId].filter(todo => todo.id === data['id']).length) {
-          this.dataStore[listId].push(data);
+        if (!this.dataStore[listId].filter(todo => todo.id === todoItem['id']).length) {
+          this.dataStore[listId].push(todoItem);
         }
         this._todoItems[listId].next(this.dataStore[listId]);
       }, error => console.log('Could not create todo'));
@@ -74,9 +74,8 @@ export class TodoItemService {
 
   updateTodoItem(todoItem: TodoItem) {
     const url = `${this.todoItemsUrl}${todoItem.id}/?todo_list=${todoItem.todo_list}`;
-    this.http.put(url, todoItem)
-      .map(response => response.json())
-      .subscribe(data => {
+    this.http.put<TodoItem>(url, todoItem)
+      .subscribe(todoItem => {
         this._todoItems[todoItem.todo_list].next(this.dataStore[todoItem.todo_list]);
       }, error => console.log('Could not update todo.'));
   }

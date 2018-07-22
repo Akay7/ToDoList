@@ -27,8 +27,8 @@ export class AuthComponent implements OnInit {
   login(form: NgForm) {
     this.authService.login(form.value)
       .subscribe(
-        res => {
-          this.user = res.json();
+        user => {
+          this.user = user;
         }, error => {
           const errors = error.json();
           this.router.navigate(['/login',  { errors: JSON.stringify(errors)}]);

@@ -41,10 +41,9 @@ export class WatchService {
 
   startWatch(todoListId: string): void {
     this.http
-      .post(this.watchUrl, {todo_list: todoListId})
-      .map(response => response.json())
-      .subscribe(data => {
-        this._watchStore.push(data);
+      .post<Watch>(this.watchUrl, {todo_list: todoListId})
+      .subscribe(watch => {
+        this._watchStore.push(watch);
         this._watch.next(this._watchStore);
       }, error => console.log('Could not watch Todo list'));
   }
@@ -52,7 +51,6 @@ export class WatchService {
   stopWatch(todoListId: string): void {
     this.http
       .delete(`${this.watchUrl}${todoListId}/`)
-      .map(response => response.json())
       .subscribe(data => {
         this._watchStore = this._watchStore.filter(w => w.todo_list !== todoListId);
         this._watch.next(this._watchStore);

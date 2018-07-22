@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -26,22 +26,22 @@ export class AuthService {
 
   userUpdate(payload: {string: string}) {
     const url = `${this.authUrl}user/`;
-    return this.http.put(url, payload)
-      .do(res => {
-        this._user.next(res.json());
+    return this.http.put<User>(url, payload)
+      .do(user => {
+        this._user.next(user);
       });
   }
 
   passwordChange(payload: {string: string}) {
     const url = `${this.authUrl}password/change/`;
-    return this.http.post(url, payload);
+    return this.http.post<any>(url, payload);
   }
 
   login(payload: {string: string}) {
     const url = `${this.authUrl}login/`;
-    return this.http.post(url, payload)
-      .do(res => {
-        this._user.next(res.json());
+    return this.http.post<User>(url, payload)
+      .do(user => {
+        this._user.next(user);
       });
   }
 
@@ -65,9 +65,9 @@ export class AuthService {
 
   registerUser(payload: {string: string}) {
     const url = `${this.authUrl}registration/`;
-    return this.http.post(url, payload)
-      .do(response => {
-        this._user.next(response.json());
+    return this.http.post<User>(url, payload)
+      .do(user => {
+        this._user.next(user);
       });
   }
 

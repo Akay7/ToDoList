@@ -1,44 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
+import { HttpClient } from "@angular/common/http";
 import { TodoList } from './todo-list';
 
 @Injectable()
 export class TodoListService {
   private todoListUrl = 'api/web/todo_list/';
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   getAll(): Promise<TodoList[]> {
     const url = `${this.todoListUrl}`;
-    return this.http.get(url)
+    return this.http.get<TodoList[]>(url)
       .toPromise()
-      .then(response => response.json() as TodoList[])
       .catch(this.handleError);
   }
 
   get(todoListId: string): Promise<TodoList> {
     const url = `${this.todoListUrl}${todoListId}/`;
-    return this.http.get(url)
+    return this.http.get<TodoList>(url)
       .toPromise()
-      .then(response => response.json() as TodoList)
       .catch(this.handleError);
   }
 
   create(payload) {
     return this.http
-      .post(this.todoListUrl, payload)
+      .post<TodoList>(this.todoListUrl, payload)
       .toPromise()
-      .then(res => res.json() as TodoList)
       .catch(this.handleError);
   }
 
   update(id: string, payload): Promise<TodoList> {
     const url = `${this.todoListUrl}${id}/`;
     return this.http
-      .put(url, payload)
+      .put<TodoList>(url, payload)
       .toPromise()
-      .then(res => res.json() as TodoList)
       .catch(this.handleError);
   }
 

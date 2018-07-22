@@ -22,7 +22,7 @@ export class MainPageComponent implements OnInit {
     if (!title) { return; }
     this.todoItemService.createTodoItemWithNewList(title)
       .subscribe(
-        response => this.router.navigate(['/', response.json().todo_list]),
+        todoItem => this.router.navigate(['/', todoItem.todo_list]),
         error => console.log(error.json())
       );
   }

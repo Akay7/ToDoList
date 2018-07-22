@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit {
   login(form: NgForm) {
     this.authService.login(form.value)
       .subscribe(
-        res => {
-          this.user = res.json();
+        user => {
+          this.user = user;
         }, error => {
           this.errors = error.json();
         });

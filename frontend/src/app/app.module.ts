@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CookieXSRFStrategy, HttpModule, XSRFStrategy} from '@angular/http';
 import { HttpClientXsrfModule } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -36,10 +35,6 @@ import { UserComponent } from './profile/user/user.component';
 import { PasswordChangeComponent } from './profile/password-change/password-change.component';
 
 
-export function xsrfFactory() {
-  return new CookieXSRFStrategy('csrftoken', 'X-CSRFToken');
-}
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,6 +61,10 @@ export function xsrfFactory() {
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFToken'
+    }),
 
     AlertModule.forRoot(),
 
